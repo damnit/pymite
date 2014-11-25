@@ -1,11 +1,11 @@
-= pymite dev =
+# pymite dev
 Spielplatz-Repo for pymite
 
-== install ==
+## install
 
     pip install -r requirements.txt
 
-== usage ==
+## usage
 
     python cli.py mite123flirzapikey
 
