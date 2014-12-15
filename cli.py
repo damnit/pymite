@@ -5,8 +5,7 @@ The plan is to use cmd.Cmd as a generic and stdlib module.
 """
 
 import sys
-from mite import (
-    Projects, Customers, Services, Users, TimeEntries, Daily, Tracker)
+from mite import Mite
 
 APIKEY = 'flirz123'
 
@@ -16,13 +15,7 @@ if __name__ == '__main__':
     except KeyError:
         print('Please provide your mite apikey as parameter.')
         exit(-1)
-    c = Customers('inquant', APIKEY)
-    p = Projects('inquant', APIKEY)
-    s = Services('inquant', APIKEY)
-    u = Users('inquant', APIKEY)
-    t = TimeEntries('inquant', APIKEY)
-    d = Daily('inquant', APIKEY)
-    tr = Tracker('inquant', APIKEY)
+    m = Mite('inquant', APIKEY)
     from IPython import embed; embed()
 
 # vim: set ft=python ts=4 sw=4 expandtab :

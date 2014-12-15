@@ -24,6 +24,9 @@ class MiteAPI(object):
         }
         self._api = partial(_path, 'https://%s.mite.yo.lk' % realm)
 
+    def __repr__(self):
+        return '<mite: %s Adapter>' % (self.__class__.__name__)
+
     @property
     def realm(self):
         return self._realm
@@ -360,5 +363,42 @@ class Tracker(MiteAPI):
         self._last = self._actual
         self._actual = None
         return self._delete(path)
+
+
+class Mite(object):
+    """ API Factory that setups and returns the adapters
+    """
+
+    def __init__(self, realm, apikey):
+        self._apikey = apikey
+        self._realm = realm
+
+    @property
+    def tracker_adapter(self):
+        return Tracker(self._realm, self._apikey)
+
+    @property
+    def daily_adapter(self):
+        return Daily(self._realm, self._apikey)
+
+    @property
+    def users_adapter(self):
+        return Users(self._realm, self._apikey)
+
+    @property
+    def time_entries_adapter(self):
+        return TimeEntries(self._realm, self._apikey)
+
+    @property
+    def customers_adapter(self):
+        return Customers(self._realm, self._apikey)
+
+    @property
+    def services_adapter(self):
+        return Services(self._realm, self._apikey)
+
+    @property
+    def projects_adapter(self):
+        return Projects(self._realm, self._apikey)
 
 # vim: set ft=python ts=4 sw=4 expandtab :
