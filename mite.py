@@ -4,11 +4,29 @@ import json
 import urllib.request as request
 import urllib.parse
 import urllib.error
-from functools import partial
+from functools import partial, wraps
 
 
 def _path(*args):
     return '/'.join([str(arg) for arg in args])
+
+
+def declassify(to_remove, *args, **kwargs):
+    """ flatten the return values of the mite api.
+    """
+    def argdecorate(fn):
+        """ enable the to_remove argument to the decorator. """
+        # wrap the function to get the original docstring
+        @wraps(fn)
+        def declassed(*args, **kwargs):
+            # call the method
+            ret = fn(*args, **kwargs)
+            # ensure that ret is a list
+            if type(ret) is list:
+                return [r[to_remove] for r in ret]
+            return ret[to_remove]
+        return declassed
+    return argdecorate
 
 
 class MiteAPI(object):
@@ -22,7 +40,6 @@ class MiteAPI(object):
             'Content-Type': 'text/json',
             'User-Agent': 'pymite/dev (https://github.com/damnit)'
         }
-        self._api = partial(_path, 'https://%s.mite.yo.lk' % realm)
 
     def __repr__(self):
         return '<mite: %s Adapter>' % (self.__class__.__name__)
@@ -40,18 +57,20 @@ class MiteAPI(object):
         return self._apikey
 
     @property
+    @declassify('account')
     def account(self):
         """ return the user's internal data. """
         return self._get('account')
 
     @property
+    @declassify('user')
     def myself(self):
         """ return the user's internal data. """
         return self._get('myself')
 
-    def api(self, realm, rest):
+    def _api(self, rest):
         """ return the api in conjunction with the rest of it :). """
-        return 'https://%s.mite.yo.lk/%s' % (realm, rest)
+        return 'https://%s.mite.yo.lk/%s' % (self.realm, rest)
 
     def _get(self, path, **kwargs):
         """ return a dict. """
@@ -60,7 +79,7 @@ class MiteAPI(object):
 
         data = urllib.parse.urlencode(kwargs)
 
-        api = self.api(self.realm, '%s.json?%s' % (path, data))
+        api = self._api('%s.json?%s' % (path, data))
         req = request.Request(api, headers=self._headers, method='GET')
 
         try:
@@ -76,7 +95,7 @@ class MiteAPI(object):
 
         data = urllib.parse.urlencode(kwargs).encode('utf-8')
 
-        api = self.api(self.realm, '%s.json' % (path))
+        api = self._api('%s.json' % path)
         req = request.Request(
             api, headers=self._headers, data=data, method='PUT')
 
@@ -93,7 +112,7 @@ class MiteAPI(object):
 
         data = urllib.parse.urlencode(kwargs).encode('utf-8')
 
-        api = self.api(self.realm, '%s.json' % (path))
+        api = self._api('%s.json' % path)
         req = request.Request(
             api, headers=self._headers, data=data, method='DELETE')
 
@@ -116,7 +135,7 @@ class MiteAPI(object):
         data = bytes(json.dumps(kwargs), encoding='UTF-8')
         # change content type on post
         self._headers['Content-Type'] = 'application/json'
-        api = self.api(self.realm, '%s.json' % (path))
+        api = self._api('%s.json' % path)
         req = request.Request(
             api, headers=self._headers, data=data, method='POST')
         try:
@@ -165,6 +184,20 @@ class Projects(DefaultReadAdapter):
         self._adapter = 'projects'
         self._class = 'project'
 
+    @declassify('project')
+    def by_id(self, id):
+        return super(Projects, self).by_id(id)
+
+    @declassify('project')
+    def by_name(self, name, archived=False, limit=None, page=None):
+        return super(Projects, self).by_name(archived=archived,
+                                             limit=limit, page=page)
+
+    @declassify('project')
+    def all(self, archived=False, limit=None, page=None):
+        return super(Projects, self).all(archived=archived,
+                                         limit=limit, page=page)
+
 
 class Services(DefaultReadAdapter):
     """ the services class. """
@@ -173,6 +206,20 @@ class Services(DefaultReadAdapter):
         super(DefaultReadAdapter, self).__init__(realm, apikey)
         self._adapter = 'services'
         self._class = 'service'
+
+    @declassify('service')
+    def by_id(self, id):
+        return super(Services, self).by_id(id)
+
+    @declassify('service')
+    def by_name(self, name, archived=False, limit=None, page=None):
+        return super(Services, self).by_name(archived=archived,
+                                             limit=limit, page=page)
+
+    @declassify('service')
+    def all(self, archived=False, limit=None, page=None):
+        return super(Services, self).all(archived=archived,
+                                         limit=limit, page=page)
 
 
 class Customers(DefaultReadAdapter):
@@ -183,6 +230,20 @@ class Customers(DefaultReadAdapter):
         self._adapter = 'customers'
         self._class = 'customer'
 
+    @declassify('customer')
+    def by_id(self, id):
+        return super(Customers, self).by_id(id)
+
+    @declassify('customer')
+    def by_name(self, name, archived=False, limit=None, page=None):
+        return super(Customers, self).by_name(archived=archived,
+                                              limit=limit, page=page)
+
+    @declassify('customer')
+    def all(self, archived=False, limit=None, page=None):
+        return super(Customers, self).all(archived=archived,
+                                          limit=limit, page=page)
+
 
 class Users(MiteAPI):
     """ the users class. """
@@ -192,12 +253,14 @@ class Users(MiteAPI):
         self._adapter = 'users'
         self._class = 'user'
 
+    @declassify('user')
     def by_id(self, id):
         """ lookup users by ID. returns a user. """
         path = partial(_path, self.adapter)
         path = path(id)
         return self._get(path, id=id)
 
+    @declassify('user')
     def by_mail(self, mail, archived=False, limit=None, page=None):
         """ lookup users by mail address.
         you may do in two ways:
@@ -228,12 +291,14 @@ class TimeEntries(MiteAPI):
         self._adapter = 'time_entries'
         self._class = 'time-entry'
 
+    @declassify('time_entry')
     def by_id(self, id):
         """ lookup time entries by ID. returns an entry. """
         path = partial(_path, self.adapter)
         path = path(id)
         return self._get(path, id=id)
 
+    @declassify('time_entry')
     def from_to(self, fromdate, todate, limit=None, page=None):
         """get all time entries from date to date.
         from/to: format YYYY-MM-DD
@@ -243,6 +308,7 @@ class TimeEntries(MiteAPI):
         kws = {'from': fromdate, 'to': todate, 'limit': limit, 'page': page}
         return self._get(path, **kws)
 
+    @declassify('time_entry')
     def at(self, at, limit=None, page=None):
         """at: today, yesterday, this_week, last_week, this_month, last_month
         or date in format YYYY-MM-DD.
@@ -251,6 +317,7 @@ class TimeEntries(MiteAPI):
         path = _path(self.adapter)
         return self._get(path, at=at, limit=limit, page=page)
 
+    @declassify('time_entry')
     def all(self, limit=None, page=None):
         """get all time entry data."""
         path = partial(_path, self.adapter)
@@ -293,6 +360,7 @@ class Daily(MiteAPI):
         super(Daily, self).__init__(realm, apikey)
         self._adapter = 'daily'
 
+    @declassify('time_entry')
     def at(self, year, month, day):
         """ time entries by year, month and day. """
         path = partial(_path, self.adapter)
@@ -301,6 +369,7 @@ class Daily(MiteAPI):
         path = path(day)
         return self._get(path)
 
+    @declassify('time_entry')
     def today(self):
         """ get today's entries. """
         path = _path(self.adapter)
@@ -323,6 +392,7 @@ class Tracker(MiteAPI):
     def last(self):
         return self._last
 
+    @declassify('tracker')
     def show(self):
         """ show the state of the tracker. """
         path = _path(self.adapter)
@@ -334,6 +404,7 @@ class Tracker(MiteAPI):
             self._actual = None
         return ret
 
+    @declassify('tracker')
     def start(self, id=None):
         """ start a specific tracker. """
         path = partial(_path, self.adapter)
@@ -351,6 +422,7 @@ class Tracker(MiteAPI):
             self._actual = None
         return ret
 
+    @declassify('tracker')
     def stop(self, id=None):
         """ stop the tracker. """
         path = partial(_path, self.adapter)
