@@ -1,8 +1,7 @@
 #  -*- coding: utf-8 -*-
 #
 #  File Name: setup.py
-#  Creation Date: 2012 Jul 24
-#  Last Modified: 2014 Dez 19
+#  Last Modified: 2014 Dez 20
 
 
 __author__ = 'Daniel Altiparmak <daniel.altiparmak@inquant.de>'
@@ -20,6 +19,7 @@ setup(
               ],
     install_requires=[
         'Click',
+        'colorama',
     ],
     entry_points='''
         [console_scripts]
