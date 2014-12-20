@@ -40,16 +40,17 @@ def cli(ctx, config, verbose):
 
 
 @cli.command()
-@click.option('--apikey',
+@click.option('--apikey','-a',
               type=click.STRING,
               required=True,
               help='Login to http://mite.yo.lk/api/index.html' \
                    'and create your API Key')
-@click.option('--domain',
+@click.option('--realm','-r',
+              help='realm is the part in the URL: https://<realm>.mite.yo.lk',
               type=click.STRING,
               required=True)
 @pass_config
-def configure(config, apikey, domain):
+def configure(config, apikey, realm):
     '''configure your account to use pymite.
     This creates a .pymite file in your home folder.
     If file already exists, those config options get overwritten
@@ -57,7 +58,7 @@ def configure(config, apikey, domain):
     if config.verbose:
         click.echo('We are in verbose mode')
 
-    config.createFile(apikey, domain)
+    config.createFile(apikey, realm)
 
 
 

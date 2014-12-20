@@ -35,12 +35,12 @@ class Config(object):
             return False
 
 
-    def createFile(self, apikey, domain):
+    def createFile(self, apikey, realm):
 
         parser = configparser.ConfigParser()
 
         parser['pymite'] = {
-            'domain' : domain,
+            'realm' : realm,
             'apikey' : apikey,
         }
 

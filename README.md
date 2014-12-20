@@ -1,12 +1,14 @@
-# pymite dev
-Spielplatz-Repo for pymite
+# PyMite
+Python Wrapper for the Mite API. PyMite also offers a self-explanatory command-line interface called pymite.
 
-## install
+## Install
 
     pip install -r requirements.txt
 
-## usage
+## Command Line Tool
 
-    python cli.py mite123flirzapikey
+Pymite uses bash completion to faciliate the usage,therefore a `pymite-complete.sh` was created.
 
-embeds into ipython with all classes instantiated.
+Please extend your .bashrc by adding this line:
+	. /path/to/pymite-complete.sh
+
