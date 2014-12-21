@@ -12,44 +12,75 @@ import os.path
 import pkg_resources  # part of setuptools
 import pathlib
 import configparser
+from pymite.api import Mite
 
 
 CONFIGFILE = os.path.expanduser('~/.pymite')
+CACHEFILE = os.path.expanduser('~/.pymite.cache')
+
+
+def fileExists(file):
+    p = pathlib.Path(file)
+    try:
+        with p.open() as f:
+            f.close()
+            return True
+    except OSError:
+        return False
+
+
+class Cache(object):
+
+    def _doesCacheFileExist(self):
+        fileExists(CACHEFILE)
 
 
 class Config(object):
-
 
     def __init__(self):
         self.verbose = False
         self.check = self._doesConfigFileExist()
 
-
     def _doesConfigFileExist(self):
-        p = pathlib.Path(CONFIGFILE)
-        try:
-            with p.open() as f:
-                f.close()
-                return True
-        except OSError:
-            return False
-
+        fileExists(CONFIGFILE)
 
     def createFile(self, apikey, realm):
-
         parser = configparser.ConfigParser()
-
         parser['pymite'] = {
             'realm' : realm,
             'apikey' : apikey,
         }
-
         with open(CONFIGFILE, 'w') as configfile:
             parser.write(configfile)
-
         click.echo(click.style('Config ~/.pymite created/overwritten', fg='white'))
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
+
+
+class PyMite(object):
+
+    def __init__(self):
+        config = configparser.ConfigParser()
+        config.read(CONFIGFILE)
+        self.realm = config['pymite']['realm']
+        self.apikey = config['pymite']['apikey']
+        self.mite = Mite(self.realm, self.apikey)
+
+
+class PyMiteDaily(PyMite):
+
+    def __init__(self):
+        super(PyMiteDaily, self).__init__()
+        self.daily_adapter = self.mite.daily_adapter
+
+    def today(self):
+        daily = self.daily_adapter
+        today = daily.today()
+        for entry in today:
+            yield entry
+
+    def yesterday(self):
+        yield 0
 
 
 # get pymite version from setuptools
