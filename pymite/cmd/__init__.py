@@ -62,7 +62,9 @@ def configure(config, apikey, realm):
 
 
 @cli.command()
-@click.option('--time-spec', type=click.Choice(['today', 'yesterday']))
+@click.option('--time-spec',
+              type=click.Choice(['today', 'yesterday']),
+              required=True)
 @pass_config
 def daily(config, time_spec):
     '''Lists all time entries of user for time specification'''
