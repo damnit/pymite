@@ -25,20 +25,35 @@ MYSELF = {
     }
 }
 
-
-def test_setup(monkeypatch, libfactory):
-    assert monkeypatch is not None
-    assert libfactory is not None
-
-    def mockmyselfreturn(*args, **kwargs):
+def mock_urlopen(json_data):
+    """ closure to parametrize the urlopen mockage. """
+    def mockreturn(*args, **kwargs):
         buf = BytesIO()
-        bytedump = bytes(json.dumps(MYSELF), encoding='UTF-8')
+        bytedump = bytes(json.dumps(json_data), encoding='UTF-8')
         buf.write(bytedump)
         buf.seek(0)
         return buf
+    return mockreturn
 
-    monkeypatch.setattr(urllib.request, 'urlopen', mockmyselfreturn)
-    daily = libfactory.daily_adapter
-    assert daily.myself == MYSELF['user']
+def test_setup(libfactory):
+    assert libfactory is not None
+
+
+def test_properties(libfactory):
+    assert libfactory._apikey == 'bar'
+    assert libfactory._realm == 'foo'
+    adapters = ['tracker', 'daily', 'users', 'time_entries', 'customers',
+                'services', 'projects']
+    for adapter in adapters:
+        assert libfactory.__getattribute__('%s_adapter' % adapter)
+
+
+def test_base_api(monkeypatch, base_api):
+    urlopen_myself = mock_urlopen(MYSELF)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_myself)
+    assert base_api.myself == MYSELF['user']
+    assert base_api.realm == 'foo'
+    assert base_api.apikey == 'bar'
+    assert base_api._api('baz') == 'https://foo.mite.yo.lk/baz'
 
 # vim: set ft=python ts=4 sw=4 expandtab :
