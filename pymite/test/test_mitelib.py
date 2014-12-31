@@ -36,15 +36,30 @@ def test_factory_properties(libfactory):
         assert libfactory.__getattribute__('%s_adapter' % adapter)
 
 
-def test_base_api(monkeypatch, base_api):
+def test_base_api_properties(monkeypatch, base_api):
     """we do not process data except the declassification of some
     top level properties.
     """
 
     assert base_api.realm == 'foo'
+    assert base_api._realm == 'foo'
+
     assert base_api.apikey == 'bar'
+    assert base_api._apikey == 'bar'
+
+    headers = {
+        'X-MiteApiKey': 'bar',
+        'Content-Type': 'text/json',
+        'User-Agent': 'pymite/dev (https://github.com/damnit)'
+    }
+
+    assert base_api._headers == headers
+
     assert base_api._api('baz') == 'https://foo.mite.yo.lk/baz'
 
+
+def test_base_api_myself(monkeypatch, base_api):
+    """ Test myself adapter property. """
     myself = {'user': {}}
 
     urlopen_myself = mock_urlopen(myself)
@@ -52,6 +67,9 @@ def test_base_api(monkeypatch, base_api):
 
     assert base_api.myself == myself['user']
 
+
+def test_base_api_account(monkeypatch, base_api):
+    """ Test account adapter property. """
     account = {'account': {}}
 
     urlopen_account = mock_urlopen(account)
