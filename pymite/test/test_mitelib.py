@@ -2,7 +2,7 @@
 #
 # File: test_mitelib.py
 #
-""" pep257 compliant module documentation."""
+""" test module to test the mite library wrapper. """
 
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
@@ -11,19 +11,6 @@ import urllib.request
 from io import BytesIO
 import json
 
-MYSELF = {
-    'user': {
-        'role': 'time_tracker',
-        'updated_at': '2014-12-18T13:37:00+01:00',
-        'email': 'foo@manc.hu',
-        'name': 'Foo Manchu',
-        'note': '',
-        'created_at': '2013-06-18T13:37:13+02:00',
-        'language': 'de',
-        'archived': False,
-        'id': 1
-    }
-}
 
 def mock_urlopen(json_data):
     """ closure to parametrize the urlopen mockage. """
@@ -35,11 +22,12 @@ def mock_urlopen(json_data):
         return buf
     return mockreturn
 
+
 def test_setup(libfactory):
     assert libfactory is not None
 
 
-def test_properties(libfactory):
+def test_factory_properties(libfactory):
     assert libfactory._apikey == 'bar'
     assert libfactory._realm == 'foo'
     adapters = ['tracker', 'daily', 'users', 'time_entries', 'customers',
@@ -49,11 +37,26 @@ def test_properties(libfactory):
 
 
 def test_base_api(monkeypatch, base_api):
-    urlopen_myself = mock_urlopen(MYSELF)
-    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_myself)
-    assert base_api.myself == MYSELF['user']
+    """we do not process data except the declassification of some
+    top level properties.
+    """
+
     assert base_api.realm == 'foo'
     assert base_api.apikey == 'bar'
     assert base_api._api('baz') == 'https://foo.mite.yo.lk/baz'
+
+    myself = {'user': {}}
+
+    urlopen_myself = mock_urlopen(myself)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_myself)
+
+    assert base_api.myself == myself['user']
+
+    account = {'account': {}}
+
+    urlopen_account = mock_urlopen(account)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_account)
+
+    assert base_api.account == account['account']
 
 # vim: set ft=python ts=4 sw=4 expandtab :
