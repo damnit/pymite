@@ -130,5 +130,4 @@ class MiteAPI(object):
         self._headers['Content-Type'] = 'text/json'
         return json.loads(resp.decode())
 
-
 # vim: set ft=python ts=4 sw=4 expandtab :

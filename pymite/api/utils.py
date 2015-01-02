@@ -1,9 +1,11 @@
 #  -*- coding: utf-8 -*-
 #
 #  File Name: utils.py
+#
+""" utils module. """
 
 
-__author__ = 'Otto Hockel'
+__author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 
@@ -26,6 +28,5 @@ def declassify(to_remove, *args, **kwargs):
             return ret[to_remove]
         return declassed
     return argdecorate
-
 
 # vim: set ft=python ts=4 sw=4 expandtab :

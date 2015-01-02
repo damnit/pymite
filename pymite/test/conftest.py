@@ -8,8 +8,7 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import pytest
-# TODO: rename module, __init__ is pretty ugly
-from pymite.api.__init__ import Mite
+from pymite.api import Mite
 from pymite.api.mite import MiteAPI
 
 
