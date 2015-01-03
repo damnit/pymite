@@ -289,6 +289,7 @@ class Tracker(MiteAPI):
         """ stop the tracker. """
         path = partial(_path, self.adapter)
         if not id and not self.actual:
+            # TODO: this is wrong in case of a running timer and a fresh setup
             raise Exception('No timer running')
         elif not id and self.actual:
             path = path(self.actual)
