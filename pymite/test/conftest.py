@@ -7,9 +7,23 @@
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
+import json
 import pytest
+from io import BytesIO
 from pymite.api import Mite
 from pymite.api.mite import MiteAPI
+
+
+def mock_urlopen(json_data, resp_code=200):
+    """ closure to parametrize the urlopen mockage. """
+    def mockreturn(*args, **kwargs):
+        buf = BytesIO()
+        bytedump = bytes(json.dumps(json_data), encoding='UTF-8')
+        buf.write(bytedump)
+        buf.seek(0)
+        buf.code = resp_code
+        return buf
+    return mockreturn
 
 
 @pytest.fixture(scope='session')

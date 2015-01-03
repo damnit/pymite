@@ -8,19 +8,7 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import urllib.request
-from io import BytesIO
-import json
-
-
-def mock_urlopen(json_data):
-    """ closure to parametrize the urlopen mockage. """
-    def mockreturn(*args, **kwargs):
-        buf = BytesIO()
-        bytedump = bytes(json.dumps(json_data), encoding='UTF-8')
-        buf.write(bytedump)
-        buf.seek(0)
-        return buf
-    return mockreturn
+from pymite.test.conftest import mock_urlopen
 
 
 def test_setup(libfactory):
