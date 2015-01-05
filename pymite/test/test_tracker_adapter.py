@@ -139,4 +139,43 @@ def test_tracker_stop_state_check(monkeypatch, libfactory):
     assert tracker.last is not None
     assert tracker.last == 24
 
+
+def test_tracker_start(monkeypatch, libfactory):
+    tracker = Tracker(libfactory.tracker_adapter.realm,
+                      libfactory.tracker_adapter.apikey)
+
+    # a fresh setup
+    assert tracker.last is None
+    assert tracker.actual is None
+
+    with pytest.raises(Exception) as excinfo:
+        tracker.start()
+        assert excinfo.message == 'no id provided and no last timer id saved.'
+
+    # now let's start a timer on an existing time entry
+    tracker_data = {
+        'tracker': {
+            'tracking_time_entry': {
+                'since':'2015-01-05T09:42:32+01:00',
+                'minutes': 42, 'id': 42
+            }
+        }
+    }
+    urlopen_tracker = mock_urlopen(tracker_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_tracker)
+
+    start = tracker.start(id=42)
+    assert start == tracker_data['tracker']
+    assert tracker.actual is 42
+    assert tracker.last is None
+
+    # let's stop it and start it again
+    tracker._last = 42
+    tracker._actual = None
+    tracker.start()
+
+    assert start == tracker_data['tracker']
+    assert tracker.actual is 42
+    assert tracker.last is 42
+
 # vim: set ft=python ts=4 sw=4 expandtab :
