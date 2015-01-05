@@ -71,7 +71,7 @@ def test_tracker_stop_no_state_check(monkeypatch, libfactory):
 
     with pytest.raises(Exception) as excinfo:
         tracker.stop()
-        assert excinfo.message == 'No timer running'
+        assert excinfo.message == 'no timer running'
 
     assert tracker.actual is None
     assert tracker.last is None

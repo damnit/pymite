@@ -271,7 +271,7 @@ class Tracker(MiteAPI):
         """ start a specific tracker. """
         path = partial(_path, self.adapter)
         if not id and not self.last:
-            raise Exception('No timer running')
+            raise Exception('no id provided and no last timer id saved.')
         elif not id and self.last:
             path = path(self.last)
         else:
@@ -290,7 +290,7 @@ class Tracker(MiteAPI):
         path = partial(_path, self.adapter)
         if not id and not self.actual:
             # TODO: this is wrong in case of a running timer and a fresh setup
-            raise Exception('No timer running')
+            raise Exception('no timer running')
         elif not id and self.actual:
             path = path(self.actual)
         else:
