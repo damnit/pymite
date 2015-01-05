@@ -71,7 +71,7 @@ def test_tracker_stop_no_state_check(monkeypatch, libfactory):
 
     with pytest.raises(Exception) as excinfo:
         tracker.stop()
-        assert excinfo.message == 'no timer running'
+        assert excinfo.message == 'No timer running'
 
     assert tracker.actual is None
     assert tracker.last is None
@@ -86,7 +86,8 @@ def test_tracker_stop_no_state_check(monkeypatch, libfactory):
     urlopen_tracker = mock_urlopen(tracker_data)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_tracker)
 
-    stop = tracker.stop()
+    # this test passes as we provide an id
+    stop = tracker.stop(id=24)
     assert stop == tracker_data['tracker']
     assert stop['stopped_time_entry']['minutes'] == 42
     assert stop['stopped_time_entry']['id'] == 24

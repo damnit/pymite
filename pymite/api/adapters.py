@@ -295,6 +295,7 @@ class Tracker(MiteAPI):
             path = path(self.actual)
         else:
             path = path(id)
+            self._actual = id
         self._last = self._actual
         self._actual = None
         return self._delete(path)
