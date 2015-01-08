@@ -243,61 +243,25 @@ class Tracker(MiteAPI):
     def __init__(self, realm, apikey):
         super(Tracker, self).__init__(realm, apikey)
         self._adapter = 'tracker'
-        self._actual = None
-        self._last = None
-
-    @property
-    def actual(self):
-        return self._actual
-
-    @property
-    def last(self):
-        return self._last
 
     @declassify('tracker')
     def show(self):
         """ show the state of the tracker. """
         path = _path(self.adapter)
-        ret = self._get(path)
-        # set the actual running time entry id
-        try:
-            self._actual = ret['tracker']['tracking_time_entry']['id']
-        except KeyError:
-            self._actual = None
-        return ret
+        return self._get(path)
 
     @declassify('tracker')
-    def start(self, id=None):
+    def start(self, id):
         """ start a specific tracker. """
         path = partial(_path, self.adapter)
-        if not id and not self.last:
-            raise Exception('no id provided and no last timer id saved.')
-        elif not id and self.last:
-            path = path(self.last)
-        else:
-            path = path(id)
-        ret = self._put(path)
-        # set the actual running time entry id
-        try:
-            self._actual = ret['tracker']['tracking_time_entry']['id']
-        except KeyError:
-            self._actual = None
-        return ret
+        path = path(id)
+        return self._put(path)
 
     @declassify('tracker')
-    def stop(self, id=None):
+    def stop(self, id):
         """ stop the tracker. """
         path = partial(_path, self.adapter)
-        if not id and not self.actual:
-            # TODO: this is wrong in case of a running timer and a fresh setup
-            raise Exception('no timer running')
-        elif not id and self.actual:
-            path = path(self.actual)
-        else:
-            path = path(id)
-            self._actual = id
-        self._last = self._actual
-        self._actual = None
+        path = path(id)
         return self._delete(path)
 
 
