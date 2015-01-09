@@ -57,7 +57,7 @@ class Projects(DefaultReadAdapter):
 
     @declassify('project')
     def all(self, archived=False, limit=None, page=None):
-       return super(Projects, self).all(archived=archived,
+        return super(Projects, self).all(archived=archived,
                                          limit=limit, page=page)
 
 
@@ -263,24 +263,6 @@ class Tracker(MiteAPI):
         path = partial(_path, self.adapter)
         path = path(id)
         return self._delete(path)
-
-class Account(MiteAPI):
-    """ Show account information """
-    def __init__(self, realm, apikey):
-        super(Account, self).__init_(realm, apikey)
-        self.adapter = 'account'
-
-    @declassify('account')
-    def by_id(self, id):
-        return super(Account, self).by_id(id)
-
-    @declassify('account')
-    def by_name(self, name, limit=None, page=None):
-        return super(Account, self).by_name(limit=limit, page=page)
-
-    @declassify('account')
-    def all(self, limit=None, page=None):
-        return super(Account, self).all(limit=limit, page=page)
 
 
 # vim: set ft=python ts=4 sw=4 expandtab :
