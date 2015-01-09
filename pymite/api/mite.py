@@ -43,7 +43,7 @@ class MiteAPI(object):
     @property
     @declassify('account')
     def account(self):
-        """ return the user's internal data. """
+        """ return the internal account information. """
         return self._get('account')
 
     @property
