@@ -44,7 +44,6 @@ class Projects(DefaultReadAdapter):
     def __init__(self, realm, apikey):
         super(DefaultReadAdapter, self).__init__(realm, apikey)
         self._adapter = 'projects'
-        self._class = 'project'
 
     @declassify('project')
     def by_id(self, id):
