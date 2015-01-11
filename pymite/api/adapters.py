@@ -47,11 +47,16 @@ class Projects(DefaultReadAdapter):
 
     @declassify('project')
     def by_id(self, id):
+        """ return a project by it's id. """
         return super(Projects, self).by_id(id)
 
     @declassify('project')
     def by_name(self, name, archived=False, limit=None, page=None):
-        return super(Projects, self).by_name(archived=archived,
+        """ return a project by it's name.
+        this only works with the exact name of the project.
+        """
+        # this only works with the exact name
+        return super(Projects, self).by_name(name, archived=archived,
                                              limit=limit, page=page)
 
     @declassify('project')

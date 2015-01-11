@@ -39,6 +39,49 @@ def test_projects_all(monkeypatch, libfactory):
 
     all_projects = projects.all()
     assert all_projects == list(map(lambda x: x['project'], all_data))
+    assert len(all_projects) == len(all_data)
+
+
+def test_projects_by_id(monkeypatch, libfactory):
+    projects = Projects(libfactory.projects_adapter.realm,
+                        libfactory.projects_adapter.apikey)
+
+    # query all projects
+    project_data = {'project': {'id': 1, 'archived': False,
+                                'customer_name': 'John Cleese',
+                                'name': 'Bicycle Repair Man', 'note':
+                                'https://www.youtube.com/watch?v=rxfzm9dfqBw'}}
+    urlopen_project = mock_urlopen(project_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
+
+    bicycle = projects.by_id(1)
+    assert bicycle == project_data['project']
+    assert bicycle['id'] == 1
+    assert bicycle['name'] == 'Bicycle Repair Man'
+
+
+def test_projects_by_name(monkeypatch, libfactory):
+    projects = Projects(libfactory.projects_adapter.realm,
+                        libfactory.projects_adapter.apikey)
+
+    # query all projects
+    project_data = {'project': {'id': 1, 'archived': False,
+                                'customer_name': 'John Cleese',
+                                'name': 'Bicycle Repair Man', 'note':
+                                'https://www.youtube.com/watch?v=rxfzm9dfqBw'}}
+    urlopen_project = mock_urlopen(project_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
+
+    bicycle = projects.by_name('Bicycle Repair Man')
+    assert bicycle == project_data['project']
+    assert bicycle['id'] == 1
+    assert bicycle['name'] == 'Bicycle Repair Man'
+
+    project_data['project']['archived'] = True
+    urlopen_project = mock_urlopen(project_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
+
+    bicycle = projects.by_name('Bicycle Repair Man', archived=True)
+    assert bicycle['archived'] == True
 
 # vim: set ft=python ts=4 sw=4 expandtab :
-
