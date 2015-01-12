@@ -9,7 +9,7 @@ __docformat__ = 'plaintext'
 
 import pytest
 import urllib.request
-from pymite.test.conftest import mock_urlopen
+from pymite.test.conftest import mock_urlopen, url__get
 from pymite.api.adapters import Projects
 
 
@@ -58,6 +58,11 @@ def test_projects_by_id(monkeypatch, libfactory):
     assert bicycle == project_data['project']
     assert bicycle['id'] == 1
     assert bicycle['name'] == 'Bicycle Repair Man'
+
+    monkeypatch.setattr(Projects, '_get', url__get)
+    url = projects.by_id(1)
+    assert url == 'https://foo.mite.yo.lk/projects/1.json'
+
 
 
 def test_projects_by_name(monkeypatch, libfactory):

@@ -9,6 +9,7 @@ __docformat__ = 'plaintext'
 
 import json
 import pytest
+import urllib
 from io import BytesIO
 from pymite.api import Mite
 from pymite.api.mite import MiteAPI
@@ -24,6 +25,18 @@ def mock_urlopen(json_data, resp_code=200):
         buf.code = resp_code
         return buf
     return mockreturn
+
+
+def url__get(self, path, **kwargs):
+    """ a short version of MiteAPI._get to check the built url.
+    """
+    kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+    data = urllib.parse.urlencode(kwargs)
+    if data:
+        api = self._api('%s.json?%s' % (path, data))
+    else:
+        api = self._api('%s.json' % path)
+    return {'project': api}
 
 
 @pytest.fixture(scope='session')
