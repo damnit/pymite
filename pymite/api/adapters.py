@@ -18,7 +18,7 @@ class DefaultReadAdapter(MiteAPI):
         """get adapter data by its id."""
         path = partial(_path, self.adapter)
         path = path(id)
-        return self._get(path, id=id)
+        return self._get(path)
 
     def by_name(self, name, archived=False, limit=None, page=None):
         """get adapter data by name."""

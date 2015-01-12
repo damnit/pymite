@@ -63,7 +63,10 @@ class MiteAPI(object):
 
         data = urllib.parse.urlencode(kwargs)
 
-        api = self._api('%s.json?%s' % (path, data))
+        if data:
+            api = self._api('%s.json?%s' % (path, data))
+        else:
+            api = self._api('%s.json' % path)
         req = request.Request(api, headers=self._headers, method='GET')
 
         try:
