@@ -59,11 +59,11 @@ class MiteAPI(object):
     def _get(self, path, **kwargs):
         """ return a dict. """
         # remove None values with new python 3 dict comprehension
-        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         data = urllib.parse.urlencode(kwargs)
 
-        if data:
+        if len(data) > 0:
             api = self._api('%s.json?%s' % (path, data))
         else:
             api = self._api('%s.json' % path)
@@ -78,7 +78,7 @@ class MiteAPI(object):
 
     def _put(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         data = urllib.parse.urlencode(kwargs).encode('utf-8')
 
@@ -95,7 +95,7 @@ class MiteAPI(object):
 
     def _delete(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         data = urllib.parse.urlencode(kwargs).encode('utf-8')
 
@@ -117,7 +117,7 @@ class MiteAPI(object):
 
     def _post(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not ('' or None)}
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         data = bytes(json.dumps(kwargs), encoding='UTF-8')
         # change content type on post
