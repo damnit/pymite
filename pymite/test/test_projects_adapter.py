@@ -9,7 +9,7 @@ __docformat__ = 'plaintext'
 
 import pytest
 import urllib.request
-from pymite.test.conftest import mock_urlopen, url__get
+from pymite.test.conftest import mock_urlopen, _get_url
 from pymite.api.adapters import Projects
 
 
@@ -46,7 +46,7 @@ def test_projects_by_id(monkeypatch, libfactory):
     projects = Projects(libfactory.projects_adapter.realm,
                         libfactory.projects_adapter.apikey)
 
-    # query all projects
+    # query an awesome project
     project_data = {'project': {'id': 1, 'archived': False,
                                 'customer_name': 'John Cleese',
                                 'name': 'Bicycle Repair Man', 'note':
@@ -55,12 +55,13 @@ def test_projects_by_id(monkeypatch, libfactory):
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
 
     bicycle = projects.by_id(1)
+
     assert bicycle == project_data['project']
     assert bicycle['id'] == 1
     assert bicycle['name'] == 'Bicycle Repair Man'
 
-    monkeypatch.setattr(Projects, '_get', url__get)
-    url = projects.by_id(1)
+    monkeypatch.setattr(Projects, '_get', _get_url('project'))
+    url = projects.by_id(1)['api']
     assert url == 'https://foo.mite.yo.lk/projects/1.json'
 
 
@@ -69,7 +70,9 @@ def test_projects_by_name(monkeypatch, libfactory):
     projects = Projects(libfactory.projects_adapter.realm,
                         libfactory.projects_adapter.apikey)
 
-    # query all projects
+    base_url = 'https://foo.mite.yo.lk/projects'
+
+    # query an awesome project
     project_data = {'project': {'id': 1, 'archived': False,
                                 'customer_name': 'John Cleese',
                                 'name': 'Bicycle Repair Man', 'note':
@@ -78,15 +81,27 @@ def test_projects_by_name(monkeypatch, libfactory):
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
 
     bicycle = projects.by_name('Bicycle Repair Man')
+
     assert bicycle == project_data['project']
     assert bicycle['id'] == 1
     assert bicycle['name'] == 'Bicycle Repair Man'
 
+    # test an archived project
     project_data['project']['archived'] = True
     urlopen_project = mock_urlopen(project_data)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_project)
 
     bicycle = projects.by_name('Bicycle Repair Man', archived=True)
     assert bicycle['archived'] == True
+
+    monkeypatch.setattr(Projects, '_get', _get_url('project'))
+    url = projects.by_name('Bicycle Repair Man', archived=True)['api']
+
+    assert url == '%s/archived.json?name=Bicycle+Repair+Man' % base_url
+
+    monkeypatch.setattr(Projects, '_get', _get_url('project'))
+    url = projects.by_name('Bicycle Repair Man')['api']
+
+    assert url == '%s.json?name=Bicycle+Repair+Man' % base_url
 
 # vim: set ft=python ts=4 sw=4 expandtab :

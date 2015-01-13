@@ -27,16 +27,57 @@ def mock_urlopen(json_data, resp_code=200):
     return mockreturn
 
 
-def url__get(self, path, **kwargs):
-    """ a short version of MiteAPI._get to check the built url.
-    """
-    kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
-    data = urllib.parse.urlencode(kwargs)
-    if data:
-        api = self._api('%s.json?%s' % (path, data))
-    else:
+def _get_url(adapter_class):
+    """ closure to parametrize the adapter class. """
+    def _get(self, path, **kwargs):
+        """ a short version of MiteAPI._get to check the built url.
+        """
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        data = urllib.parse.urlencode(kwargs)
+        if len(data) > 0:
+            api = self._api('%s.json?%s' % (path, data))
+        else:
+            api = self._api('%s.json' % path)
+        return {adapter_class: {'api': api, 'data': data}}
+    return _get
+
+
+def _post_url(adapter_class):
+    """ closure to parametrize the adapter class. """
+    def _post(self, path, **kwargs):
+        """ a short version of MiteAPI._post to check the built url.
+        """
+        kwargs = {k: v for k, v in kwargs.items() if v is not ('' or None)}
+        data = bytes(json.dumps(kwargs), encoding='UTF-8')
+        # change content type on post
+        self._headers['Content-Type'] = 'application/json'
         api = self._api('%s.json' % path)
-    return {'project': api}
+        return {adapter_class: {'api': api, 'data': data}}
+    return _post
+
+
+def _put_url(adapter_class):
+    """ closure to parametrize the adapter class. """
+    def _put(self, path, **kwargs):
+        """ a short version of MiteAPI._put to check the built url.
+        """
+        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+        data = urllib.parse.urlencode(kwargs).encode('utf-8')
+        api = self._api('%s.json' % path)
+        return {adapter_class: {'api': api, 'data': data}}
+    return _put
+
+
+def _delete_url(adapter_class):
+    """ a short version of MiteAPI._delete to check the built url.
+    """
+    def _delete(self, path, **kwargs):
+        """ return a dict. """
+        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
+        data = urllib.parse.urlencode(kwargs).encode('utf-8')
+        api = self._api('%s.json' % path)
+        return {adapter_class: {'api': api, 'data': data}}
+    return _delete
 
 
 @pytest.fixture(scope='session')
