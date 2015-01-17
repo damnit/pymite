@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#
 # File: conftest.py
-#
 """ Conftest file that sets up the unit tests."""
 
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'

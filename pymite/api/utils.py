@@ -1,7 +1,5 @@
 #  -*- coding: utf-8 -*-
-#
-#  File Name: utils.py
-#
+#  File: utils.py
 """ utils module. """
 
 

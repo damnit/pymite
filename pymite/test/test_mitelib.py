@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#
 # File: test_mitelib.py
-#
 """ test module to test the mite library wrapper. """
 
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'

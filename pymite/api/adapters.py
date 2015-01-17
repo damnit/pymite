@@ -1,4 +1,6 @@
-""" mite connection library module. """
+# -*- coding: utf-8 -*-
+# File: adapters.py
+""" api adapters module. """
 
 from functools import partial
 from pymite.api.mite import MiteAPI

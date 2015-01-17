@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#
 # File: test_data.py
-#
 """ we should store json files and read them through this module. """
 
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'

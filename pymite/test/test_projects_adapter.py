@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#
 # File: test_projects_adapter.py
-#
 """ projects adapter test module. """
 
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'

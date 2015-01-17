@@ -1,7 +1,6 @@
 #  -*- coding: utf-8 -*-
-#
-#  File Name: mite.py
-
+#  File: mite.py
+""" mite api base module"""
 
 __author__ = 'Otto Hockel'
 __docformat__ = 'plaintext'

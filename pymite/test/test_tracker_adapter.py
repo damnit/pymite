@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-#
 # File: test_tracker_adapter.py
-#
 """ tracker adapter test module. """
 
 __author__ = 'Otto Hockel <hockel.otto@gmail.com>'

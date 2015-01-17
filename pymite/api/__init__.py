@@ -1,7 +1,6 @@
 #  -*- coding: utf-8 -*-
-#
-#  File Name: __init__.py
-
+#  File: __init__.py
+""" Mite API factory"""
 
 __author__ = 'Otto Hockel'
 __docformat__ = 'plaintext'
