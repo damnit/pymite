@@ -10,6 +10,7 @@ __docformat__ = 'plaintext'
 import json
 import pytest
 import urllib
+from collections import OrderedDict
 from io import BytesIO
 from pymite.api import Mite
 from pymite.api.mite import MiteAPI
@@ -32,8 +33,11 @@ def _get_url(adapter_class):
     def _get(self, path, **kwargs):
         """ a short version of MiteAPI._get to check the built url.
         """
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
-        data = urllib.parse.urlencode(kwargs)
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+
+        data = urllib.parse.urlencode(clean_kwargs)
         if len(data) > 0:
             api = self._api('%s.json?%s' % (path, data))
         else:
@@ -47,8 +51,11 @@ def _post_url(adapter_class):
     def _post(self, path, **kwargs):
         """ a short version of MiteAPI._post to check the built url.
         """
-        kwargs = {k: v for k, v in kwargs.items() if v is not ('' or None)}
-        data = bytes(json.dumps(kwargs), encoding='UTF-8')
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+
+        data = bytes(json.dumps(clean_kwargs), encoding='UTF-8')
         # change content type on post
         self._headers['Content-Type'] = 'application/json'
         api = self._api('%s.json' % path)
@@ -61,8 +68,11 @@ def _put_url(adapter_class):
     def _put(self, path, **kwargs):
         """ a short version of MiteAPI._put to check the built url.
         """
-        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
-        data = urllib.parse.urlencode(kwargs).encode('utf-8')
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+
+        data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
         return {adapter_class: {'api': api, 'data': data}}
     return _put
@@ -73,8 +83,11 @@ def _delete_url(adapter_class):
     """
     def _delete(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not '' or None}
-        data = urllib.parse.urlencode(kwargs).encode('utf-8')
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+
+        data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
         return {adapter_class: {'api': api, 'data': data}}
     return _delete

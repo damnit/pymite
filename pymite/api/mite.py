@@ -10,6 +10,7 @@ __docformat__ = 'plaintext'
 import json
 import urllib.parse
 import urllib.request as request
+from collections import OrderedDict
 from pymite.api.utils import declassify
 
 
@@ -58,11 +59,11 @@ class MiteAPI(object):
 
     def _get(self, path, **kwargs):
         """ return a dict. """
-        # remove None values with new python 3 dict comprehension
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
 
-        data = urllib.parse.urlencode(kwargs)
-
+        data = urllib.parse.urlencode(clean_kwargs)
         if len(data) > 0:
             api = self._api('%s.json?%s' % (path, data))
         else:
@@ -76,12 +77,33 @@ class MiteAPI(object):
 
         return json.loads(resp.decode())
 
+    def _post(self, path, **kwargs):
+        """ return a dict. """
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+
+        data = bytes(json.dumps(clean_kwargs), encoding='UTF-8')
+        # change content type on post
+        self._headers['Content-Type'] = 'application/json'
+        api = self._api('%s.json' % path)
+        req = request.Request(
+            api, headers=self._headers, data=data, method='POST')
+        try:
+            resp = request.urlopen(req, data).read()
+        except urllib.error.HTTPError as e:
+            resp = e.fp.read()
+        # reset content type
+        self._headers['Content-Type'] = 'text/json'
+        return json.loads(resp.decode())
+
     def _put(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
 
-        data = urllib.parse.urlencode(kwargs).encode('utf-8')
-
+        data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
         req = request.Request(
             api, headers=self._headers, data=data, method='PUT')
@@ -95,10 +117,11 @@ class MiteAPI(object):
 
     def _delete(self, path, **kwargs):
         """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        # clean kwargs (filter None and empty string)
+        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
 
-        data = urllib.parse.urlencode(kwargs).encode('utf-8')
-
+        data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
         req = request.Request(
             api, headers=self._headers, data=data, method='DELETE')
@@ -113,24 +136,6 @@ class MiteAPI(object):
                 resp = resp_txt
         except urllib.error.HTTPError as e:
             resp = e.fp.read()
-        return json.loads(resp.decode())
-
-    def _post(self, path, **kwargs):
-        """ return a dict. """
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
-
-        data = bytes(json.dumps(kwargs), encoding='UTF-8')
-        # change content type on post
-        self._headers['Content-Type'] = 'application/json'
-        api = self._api('%s.json' % path)
-        req = request.Request(
-            api, headers=self._headers, data=data, method='POST')
-        try:
-            resp = request.urlopen(req, data).read()
-        except urllib.error.HTTPError as e:
-            resp = e.fp.read()
-        # reset content type
-        self._headers['Content-Type'] = 'text/json'
         return json.loads(resp.decode())
 
 # vim: set ft=python ts=4 sw=4 expandtab :
