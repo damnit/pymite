@@ -73,7 +73,6 @@ class Services(DefaultReadAdapter):
     def __init__(self, realm, apikey):
         super(DefaultReadAdapter, self).__init__(realm, apikey)
         self._adapter = 'services'
-        self._class = 'service'
 
     @declassify('service')
     def by_id(self, id):
@@ -96,7 +95,6 @@ class Customers(DefaultReadAdapter):
     def __init__(self, realm, apikey):
         super(DefaultReadAdapter, self).__init__(realm, apikey)
         self._adapter = 'customers'
-        self._class = 'customer'
 
     @declassify('customer')
     def by_id(self, id):
@@ -104,7 +102,7 @@ class Customers(DefaultReadAdapter):
 
     @declassify('customer')
     def by_name(self, name, archived=False, limit=None, page=None):
-        return super(Customers, self).by_name(archived=archived,
+        return super(Customers, self).by_name(name, archived=archived,
                                               limit=limit, page=page)
 
     @declassify('customer')
