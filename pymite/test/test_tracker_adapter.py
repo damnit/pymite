@@ -7,7 +7,7 @@ __docformat__ = 'plaintext'
 
 import pytest
 import urllib.request
-from pymite.test.conftest import mock_urlopen
+from pymite.test.conftest import mock_urlopen, _get_url, _put_url, _delete_url
 from pymite.api.adapters import Tracker
 
 
@@ -48,6 +48,15 @@ def test_tracker_show(monkeypatch, libfactory):
     assert show['tracking_time_entry']['id'] == 31337
 
 
+def test_tracker_show_url(monkeypatch, libfactory):
+    """ is that url built right? """
+    tracker = libfactory.tracker_adapter
+    monkeypatch.setattr(Tracker, '_get', _get_url('tracker'))
+
+    stop = tracker.show()
+    assert stop['api'] == 'https://foo.mite.yo.lk/tracker.json'
+
+
 def test_tracker_start(monkeypatch, libfactory):
     tracker = Tracker(libfactory.tracker_adapter.realm,
                       libfactory.tracker_adapter.apikey)
@@ -66,6 +75,15 @@ def test_tracker_start(monkeypatch, libfactory):
 
     start = tracker.start(42)
     assert start == tracker_data['tracker']
+
+
+def test_tracker_start_url(monkeypatch, libfactory):
+    """ is that url built right? """
+    tracker = libfactory.tracker_adapter
+    monkeypatch.setattr(Tracker, '_put', _put_url('tracker'))
+
+    stop = tracker.start(42)
+    assert stop['api'] == 'https://foo.mite.yo.lk/tracker/42.json'
 
 
 def test_tracker_stop(monkeypatch, libfactory):
@@ -95,5 +113,15 @@ def test_tracker_stop(monkeypatch, libfactory):
     assert stop == tracker_data['tracker']
     assert stop['stopped_time_entry']['minutes'] == 42
     assert stop['stopped_time_entry']['id'] == 24
+
+
+def test_tracker_stop_url(monkeypatch, libfactory):
+    """ is that url built right? """
+    tracker = libfactory.tracker_adapter
+    monkeypatch.setattr(Tracker, '_delete', _delete_url('tracker'))
+
+    stop = tracker.stop(42)
+    assert stop['api'] == 'https://foo.mite.yo.lk/tracker/42.json'
+
 
 # vim: set ft=python ts=4 sw=4 expandtab :
