@@ -81,7 +81,7 @@ class Services(DefaultReadAdapter):
 
     @declassify('service')
     def by_name(self, name, archived=False, limit=None, page=None):
-        return super(Services, self).by_name(archived=archived,
+        return super(Services, self).by_name(name, archived=archived,
                                              limit=limit, page=page)
 
     @declassify('service')
