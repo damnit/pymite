@@ -124,7 +124,7 @@ class Users(MiteAPI):
         """ lookup users by ID. returns a user. """
         path = partial(_path, self.adapter)
         path = path(id)
-        return self._get(path, id=id)
+        return self._get(path)
 
     @declassify('user')
     def by_mail(self, mail, archived=False, limit=None, page=None):
@@ -142,6 +142,16 @@ class Users(MiteAPI):
         else:
             path = _path(self.adapter, 'archived')
         return self._get(path, email=mail, limit=limit, page=page)
+
+    @declassify('user')
+    def all(self, archived=False, limit=None, page=None):
+        """get all time entry data."""
+        path = partial(_path, self.adapter)
+        if not archived:
+            path = _path(self.adapter)
+        else:
+            path = _path(self.adapter, 'archived')
+        return self._get(path, limit=limit, page=page)
 
 
 class TimeEntries(MiteAPI):
