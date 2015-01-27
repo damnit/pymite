@@ -230,9 +230,9 @@ class Daily(MiteAPI):
     def at(self, year, month, day):
         """ time entries by year, month and day. """
         path = partial(_path, self.adapter)
-        path = partial(path, year)
-        path = partial(path, month)
-        path = path(day)
+        path = partial(path, int(year))
+        path = partial(path, int(month))
+        path = path(int(day))
         return self._get(path)
 
     @declassify('time_entry')
