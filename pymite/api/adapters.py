@@ -172,7 +172,7 @@ class TimeEntries(MiteAPI):
         """ lookup time entries by ID. returns an entry. """
         path = partial(_path, self.adapter)
         path = path(id)
-        return self._get(path, id=id)
+        return self._get(path)
 
     @declassify('time_entry')
     def from_to(self, fromdate, todate, limit=None, page=None):
