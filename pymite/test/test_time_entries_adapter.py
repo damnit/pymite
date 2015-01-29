@@ -14,13 +14,6 @@ def test_time_entries_setup(libfactory):
     te = TimeEntries(factory.realm, factory.apikey)
     assert te.adapter == 'time_entries'
 
-    #def by_id(self, id):
-    #def from_to(self, fromdate, todate, limit=None, page=None):
-    #def all(self, limit=None, page=None):
-    #def create(self, date_at=None, minutes=0, note='', user_id=None,
-    #           project_id=None, service_id=None):
-    #def delete(self, id):
-
 
 def test_time_entries_at(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
@@ -59,5 +52,67 @@ def test_time_entries_by_id_url(monkeypatch, libfactory):
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
     url = te.by_id(42)['api']
     assert url == 'https://foo.mite.yo.lk/time_entries/42.json'
+
+
+def test_time_entries_all(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+    all_data = [{'time_entry': {}} for _ in range(100)]
+    urlopen_all = mock_urlopen(all_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_all)
+    time_entries = te.all()
+    assert time_entries == list(map(lambda x: x['time_entry'], all_data))
+    assert len(time_entries) == len(all_data)
+
+
+def test_time_entries_all_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
+    url = te.all()['api']
+    assert url == 'https://foo.mite.yo.lk/time_entries.json'
+
+
+def test_time_entries_all_paginated_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
+    url = te.all(limit=10)['api']
+    assert url == 'https://foo.mite.yo.lk/time_entries.json?limit=10'
+
+
+def test_time_entries_from_to(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+    ft_data = [{'time_entry': {}} for _ in range(1000)]
+    urlopen_ft = mock_urlopen(ft_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_ft)
+    ft = te.from_to('2015-02-02', '2015-02-14')
+    assert ft == list(map(lambda x: x['time_entry'], ft_data))
+    assert len(ft) == len(ft_data)
+
+
+def test_time_entries_from_to_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
+    url = te.from_to('2015-02-02', '2015-02-14')['api']
+    base_url = 'https://foo.mite.yo.lk/time_entries.json'
+    get_data = '?from=2015-02-02&to=2015-02-14'
+    assert url == '%s%s' % (base_url, get_data)
+
+
+def test_time_entries_from_to_paginated_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
+    url = te.from_to('2015-02-02', '2015-02-14', page=4)['api']
+    base_url = 'https://foo.mite.yo.lk/time_entries.json'
+    get_data = '?from=2015-02-02&page=4&to=2015-02-14'
+    assert url == '%s%s' % (base_url, get_data)
+
+
+# TODO:
+#    def create(self, date_at=None, minutes=0, note='', user_id=None,
+#               project_id=None, service_id=None)
+#    delete(self, id)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

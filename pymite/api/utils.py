@@ -20,13 +20,13 @@ def declassify(to_remove, *args, **kwargs):
         def declassed(*args, **kwargs):
             # call the method
             ret = fn(*args, **kwargs)
+            # catch errors that are thrown by the api
             try:
                 # ensure that ret is a list
                 if type(ret) is list:
                     return [r[to_remove] for r in ret]
                 return ret[to_remove]
             except KeyError:
-                # except errors that are thrown by the api
                 return ret
         return declassed
     return argdecorate
