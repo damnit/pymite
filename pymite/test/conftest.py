@@ -44,7 +44,7 @@ def _get_url(adapter_class):
     return _get
 
 
-def _post_url(adapter_class):
+def _post_url(resp_code):
     """ closure to parametrize the adapter class. """
     def _post(self, path, **kwargs):
         """ a short version of MiteAPI._post to check the built url.
@@ -57,11 +57,11 @@ def _post_url(adapter_class):
         # change content type on post
         self._headers['Content-Type'] = 'application/json'
         api = self._api('%s.json' % path)
-        return {adapter_class: {'api': api, 'data': data}}
+        return {'api': api, 'data': data, 'code': resp_code, 'method': 'POST'}
     return _post
 
 
-def _put_url(adapter_class):
+def _put_url(resp_code):
     """ closure to parametrize the adapter class. """
     def _put(self, path, **kwargs):
         """ a short version of MiteAPI._put to check the built url.
@@ -72,11 +72,11 @@ def _put_url(adapter_class):
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
-        return {adapter_class: {'api': api, 'data': data}}
+        return {'api': api, 'data': data, 'code': resp_code, 'method': 'PUT'}
     return _put
 
 
-def _delete_url(adapter_class):
+def _delete_url(resp_code):
     """ a short version of MiteAPI._delete to check the built url.
     """
     def _delete(self, path, **kwargs):
@@ -87,7 +87,7 @@ def _delete_url(adapter_class):
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
-        return {adapter_class: {'api': api, 'data': data}}
+        return {'api': api, 'data': data, 'code': resp_code, 'method': 'DELETE'}
     return _delete
 
 

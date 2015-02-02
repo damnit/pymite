@@ -3,7 +3,7 @@
 """ time entries adapter test module. """
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url
+from pymite.test.conftest import mock_urlopen, _get_url, _post_url, _delete_url
 from pymite.api.adapters import TimeEntries
 
 
@@ -110,9 +110,44 @@ def test_time_entries_from_to_paginated_url(monkeypatch, libfactory):
     assert url == '%s%s' % (base_url, get_data)
 
 
-# TODO:
-#    def create(self, date_at=None, minutes=0, note='', user_id=None,
-#               project_id=None, service_id=None)
-#    delete(self, id)
+def test_time_entries_delete(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+    ft_data = {'success': 200}
+    urlopen_ft = mock_urlopen(ft_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_ft)
+    ft = te.delete(42)
+    assert ft == {'success': 200}
+
+
+def test_time_entries_delete_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_delete', _delete_url(200))
+    data = te.delete(1337)
+    base_url = 'https://foo.mite.yo.lk/time_entries/1337.json'
+    assert data['api'] == base_url
+    assert data['code'] == 200
+    assert data['method'] == 'DELETE'
+
+
+def test_time_entries_create(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+    cr_data = {'time_entry': {}}
+    urlopen_cr = mock_urlopen(cr_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_cr)
+    cr = te.create(minutes=42, note='foo', user_id=666)
+    assert cr == cr_data['time_entry']
+
+
+def test_time_entries_create_url(monkeypatch, libfactory):
+    te = libfactory.time_entries_adapter
+
+    monkeypatch.setattr(TimeEntries, '_post', _post_url(201))
+    data = te.create(minutes=42, user_id=123, note='bam')
+    base_url = 'https://foo.mite.yo.lk/time_entries.json'
+    assert data['api'] == base_url
+    assert data['code'] == 201
+    assert data['method'] == 'POST'
+    assert data['data'] == b'{"minutes": 42, "note": "bam", "user_id": 123}'
 
 # vim: set ft=python ts=4 sw=4 expandtab :

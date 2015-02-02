@@ -200,6 +200,7 @@ class TimeEntries(MiteAPI):
         path = _path(self.adapter)
         return self._get(path, limit=limit, page=page)
 
+    @declassify('time_entry')
     def create(self, date_at=None, minutes=0, note='', user_id=None,
                project_id=None, service_id=None):
         """ date_at - date of time entry. Format YYYY-MM-DD. default: today
@@ -210,14 +211,12 @@ class TimeEntries(MiteAPI):
             service_id - default: None
         """
         kwargs = {
-            self._class: {
-                'date_at': date_at,
-                'minutes': minutes,
-                'note': note,
-                'user_id': user_id,
-                'project_id': project_id,
-                'service_id': service_id,
-            }
+            'date_at': date_at,
+            'minutes': minutes,
+            'note': note,
+            'user_id': user_id,
+            'project_id': project_id,
+            'service_id': service_id,
         }
         path = partial(_path, self.adapter)
         path = _path(self.adapter)
