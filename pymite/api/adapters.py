@@ -175,30 +175,15 @@ class TimeEntries(MiteAPI):
         return self._get(path)
 
     @declassify('time_entry')
-    def from_to(self, fromdate, todate, limit=None, page=None):
-        """get all time entries from date to date.
-        from/to: format YYYY-MM-DD
+    @declassify('time_entry_group')
+    def query(self, **kwargs):
+        """a free query - you are responsible for the kwargs.
+        Object categories 'time_entry' and 'time_entry_group' are declassed.
+        See http://mite.yo.lk/en/api/time-entries.html for more information.
         """
         path = partial(_path, self.adapter)
         path = _path(self.adapter)
-        kws = {'from': fromdate, 'to': todate, 'limit': limit, 'page': page}
-        return self._get(path, **kws)
-
-    @declassify('time_entry')
-    def at(self, at, limit=None, page=None):
-        """at: today, yesterday, this_week, last_week, this_month, last_month
-        or date in format YYYY-MM-DD.
-        """
-        path = partial(_path, self.adapter)
-        path = _path(self.adapter)
-        return self._get(path, at=at, limit=limit, page=page)
-
-    @declassify('time_entry')
-    def all(self, limit=None, page=None):
-        """get all time entry data."""
-        path = partial(_path, self.adapter)
-        path = _path(self.adapter)
-        return self._get(path, limit=limit, page=page)
+        return self._get(path, **kwargs)
 
     @declassify('time_entry')
     def create(self, date_at=None, minutes=0, note='', user_id=None,

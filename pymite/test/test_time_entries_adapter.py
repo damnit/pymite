@@ -23,7 +23,7 @@ def test_time_entries_at(monkeypatch, libfactory):
     ]
     urlopen_at = mock_urlopen(at_data)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_at)
-    at = te.at('2015-02-02')
+    at = te.query(at='2015-02-02')
     assert at == list(map(lambda x: x['time_entry'], at_data))
     assert len(at) == len(at_data)
 
@@ -32,7 +32,7 @@ def test_time_entries_at_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    url = te.at('2015-02-02')['api']
+    url = te.query(at='2015-02-02')['api']
     assert url == 'https://foo.mite.yo.lk/time_entries.json?at=2015-02-02'
 
 
@@ -59,7 +59,7 @@ def test_time_entries_all(monkeypatch, libfactory):
     all_data = [{'time_entry': {}} for _ in range(100)]
     urlopen_all = mock_urlopen(all_data)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_all)
-    time_entries = te.all()
+    time_entries = te.query()
     assert time_entries == list(map(lambda x: x['time_entry'], all_data))
     assert len(time_entries) == len(all_data)
 
@@ -68,7 +68,7 @@ def test_time_entries_all_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    url = te.all()['api']
+    url = te.query()['api']
     assert url == 'https://foo.mite.yo.lk/time_entries.json'
 
 
@@ -76,7 +76,7 @@ def test_time_entries_all_paginated_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    url = te.all(limit=10)['api']
+    url = te.query(limit=10)['api']
     assert url == 'https://foo.mite.yo.lk/time_entries.json?limit=10'
 
 
@@ -85,7 +85,8 @@ def test_time_entries_from_to(monkeypatch, libfactory):
     ft_data = [{'time_entry': {}} for _ in range(1000)]
     urlopen_ft = mock_urlopen(ft_data)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_ft)
-    ft = te.from_to('2015-02-02', '2015-02-14')
+    kws = {'from': '2015-02-02', 'to': '2015-02-14'}
+    ft = te.query(**kws)
     assert ft == list(map(lambda x: x['time_entry'], ft_data))
     assert len(ft) == len(ft_data)
 
@@ -94,7 +95,8 @@ def test_time_entries_from_to_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    url = te.from_to('2015-02-02', '2015-02-14')['api']
+    kws = {'from': '2015-02-02', 'to': '2015-02-14'}
+    url = te.query(**kws)['api']
     base_url = 'https://foo.mite.yo.lk/time_entries.json'
     get_data = '?from=2015-02-02&to=2015-02-14'
     assert url == '%s%s' % (base_url, get_data)
@@ -104,7 +106,8 @@ def test_time_entries_from_to_paginated_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    url = te.from_to('2015-02-02', '2015-02-14', page=4)['api']
+    kws = {'from': '2015-02-02', 'to': '2015-02-14', 'page': 4}
+    url = te.query(**kws)['api']
     base_url = 'https://foo.mite.yo.lk/time_entries.json'
     get_data = '?from=2015-02-02&page=4&to=2015-02-14'
     assert url == '%s%s' % (base_url, get_data)
