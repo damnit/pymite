@@ -72,7 +72,7 @@ def test_time_entries_all_url(monkeypatch, libfactory):
     assert url == 'https://foo.mite.yo.lk/time_entries.json'
 
 
-def test_time_entries_all_paginated_url(monkeypatch, libfactory):
+def test_time_entries_all_limited_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
