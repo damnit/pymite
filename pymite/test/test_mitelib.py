@@ -42,6 +42,7 @@ def test_base_api_properties(monkeypatch, base_api):
     assert base_api._headers == headers
 
     assert base_api._api('baz') == 'https://foo.mite.yo.lk/baz'
+    assert base_api.__repr__() == '<mite: MiteAPI Adapter>'
 
 
 def test_base_api_myself(monkeypatch, base_api):
