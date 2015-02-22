@@ -118,7 +118,7 @@ def test_tracker_stop(monkeypatch, libfactory):
 def test_tracker_stop_url(monkeypatch, libfactory):
     """ is that url built right? """
     tracker = libfactory.tracker_adapter
-    monkeypatch.setattr(Tracker, '_delete', _delete_url('tracker'))
+    monkeypatch.setattr(Tracker, '_delete', _delete_url(200))
 
     stop = tracker.stop(42)
     assert stop['api'] == 'https://foo.mite.yo.lk/tracker/42.json'

@@ -115,8 +115,9 @@ def test_time_entries_from_to_paginated_url(monkeypatch, libfactory):
 
 def test_time_entries_delete(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
-    ft_data = {'success': 200}
-    urlopen_ft = mock_urlopen(ft_data)
+    # ft_data = {'success': 200}
+    ft_data = b' '
+    urlopen_ft = mock_urlopen(ft_data, resp_code=200)
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_ft)
     ft = te.delete(42)
     assert ft == {'success': 200}

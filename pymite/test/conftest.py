@@ -14,15 +14,25 @@ from pymite.api import Mite
 from pymite.api.mite import MiteAPI
 
 
-def mock_urlopen(json_data, resp_code=200):
+def mock_urlopen(data, resp_code=200):
     """ closure to parametrize the urlopen mockage. """
     def mockreturn(*args, **kwargs):
         buf = BytesIO()
-        bytedump = bytes(json.dumps(json_data), encoding='UTF-8')
+        if not isinstance(data, bytes):
+            bytedump = bytes(json.dumps(data), encoding='UTF-8')
+        else:
+            bytedump = data
         buf.write(bytedump)
         buf.seek(0)
         buf.code = resp_code
         return buf
+    return mockreturn
+
+
+def mock_http_error():
+    """ closure to parametrize the urlopen mockage. """
+    def mockreturn(*args, **kwargs):
+        return {'error': 'You do not have the permission to do that.'}
     return mockreturn
 
 
