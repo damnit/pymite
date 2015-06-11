@@ -36,18 +36,11 @@ setup(
     name="pymite",
     version='0.1dev',
     packages=['pymite.api',
-              'pymite.cmd',
+              'pymite.test',
               ],
-    install_requires=[
-        'Click',
-        'colorama',
-    ],
+    install_requires=[],
     tests_require=['pytest'],
-    cmdclass={'test': PyTest},
-    entry_points='''
-        [console_scripts]
-        pymite=pymite.cmd:cli
-    '''
+    cmdclass={'test': PyTest}
 )
 
 
