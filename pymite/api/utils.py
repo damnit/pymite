@@ -8,6 +8,7 @@ __docformat__ = 'plaintext'
 
 
 from functools import wraps
+from collections import OrderedDict
 
 
 def declassify(to_remove, *args, **kwargs):
@@ -30,5 +31,18 @@ def declassify(to_remove, *args, **kwargs):
                 return ret
         return declassed
     return argdecorate
+
+
+def clean_dict(d):
+    """ remove the keys with None values. """
+    ktd = list()
+    for k, v in d.items():
+        if not v:
+            ktd.append(k)
+        elif type(v) is dict or type(v) is OrderedDict:
+            d[k] = clean_dict(v)
+    for k in ktd:
+        d.pop(k)
+    return d
 
 # vim: set ft=python ts=4 sw=4 expandtab :

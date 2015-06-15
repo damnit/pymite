@@ -12,6 +12,7 @@ from collections import OrderedDict
 from io import BytesIO
 from pymite.api import Mite
 from pymite.api.mite import MiteAPI
+from pymite.api.utils import clean_dict
 
 
 def mock_urlopen(data, resp_code=200):
@@ -60,8 +61,7 @@ def _post_url(resp_code):
         """ a short version of MiteAPI._post to check the built url.
         """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = bytes(json.dumps(clean_kwargs), encoding='UTF-8')
         # change content type on post

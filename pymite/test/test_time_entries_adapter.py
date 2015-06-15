@@ -152,6 +152,6 @@ def test_time_entries_create_url(monkeypatch, libfactory):
     assert data['api'] == base_url
     assert data['code'] == 201
     assert data['method'] == 'POST'
-    assert data['data'] == b'{"minutes": 42, "note": "bam", "user_id": 123}'
+    assert data['data'] == b'{"time_entry": {"minutes": 42, "note": "bam", "user_id": 123}}'
 
 # vim: set ft=python ts=4 sw=4 expandtab :

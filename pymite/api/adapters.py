@@ -195,7 +195,7 @@ class TimeEntries(MiteAPI):
             project_id - default: None
             service_id - default: None
         """
-        kwargs = {
+        keywords = {
             'date_at': date_at,
             'minutes': minutes,
             'note': note,
@@ -203,9 +203,11 @@ class TimeEntries(MiteAPI):
             'project_id': project_id,
             'service_id': service_id,
         }
+        foo = dict()
+        foo['time_entry'] = keywords
         path = partial(_path, self.adapter)
         path = _path(self.adapter)
-        return self._post(path, **kwargs)
+        return self._post(path, **foo)
 
     def delete(self, id):
         """ delete a time entry. """

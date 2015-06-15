@@ -10,7 +10,7 @@ import json
 import urllib.parse
 import urllib.request as request
 from collections import OrderedDict
-from pymite.api.utils import declassify
+from pymite.api.utils import declassify, clean_dict
 
 
 class MiteAPI(object):
@@ -59,7 +59,8 @@ class MiteAPI(object):
     def _get(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
+        clean_kwargs = kwargs.items()
+        # clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
         clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
 
         data = urllib.parse.urlencode(clean_kwargs)
@@ -79,8 +80,7 @@ class MiteAPI(object):
     def _post(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = bytes(json.dumps(clean_kwargs), encoding='UTF-8')
         # change content type on post
