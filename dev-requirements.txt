@@ -1,4 +1,1 @@
-click==3.3
-colorama==0.3.2
-ipdb==0.8
 ipython==2.3.0
