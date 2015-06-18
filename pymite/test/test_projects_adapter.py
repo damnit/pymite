@@ -6,7 +6,7 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url
+from pymite.test.conftest import mock_urlopen, _get_url, parse_params
 from pymite.api.adapters import Projects
 
 
@@ -143,6 +143,7 @@ def test_projects_by_name_limited_paginated(monkeypatch, libfactory):
 
     monkeypatch.setattr(Projects, '_get', _get_url('project'))
     url = projects.all(limit=2, page=5)['api']
-    assert url == 'https://foo.mite.yo.lk/projects.json?limit=2&page=5'
+    assert ('https://foo.mite.yo.lk/projects.json?' in url)
+    assert {'limit': '2', 'page': '5'} == parse_params(url)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

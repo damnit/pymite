@@ -8,7 +8,6 @@ __docformat__ = 'plaintext'
 
 
 from functools import wraps
-from collections import OrderedDict
 
 
 def declassify(to_remove, *args, **kwargs):
@@ -39,7 +38,7 @@ def clean_dict(d):
     for k, v in d.items():
         if not v:
             ktd.append(k)
-        elif type(v) is dict or type(v) is OrderedDict:
+        elif type(v) is dict:
             d[k] = clean_dict(v)
     for k in ktd:
         d.pop(k)

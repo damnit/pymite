@@ -8,7 +8,6 @@ __docformat__ = 'plaintext'
 import json
 import pytest
 import urllib
-from collections import OrderedDict
 from io import BytesIO
 from pymite.api import Mite
 from pymite.api.mite import MiteAPI
@@ -43,8 +42,7 @@ def _get_url(adapter_class):
         """ a short version of MiteAPI._get to check the built url.
         """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs)
         if len(data) > 0:
@@ -77,8 +75,7 @@ def _put_url(resp_code):
         """ a short version of MiteAPI._put to check the built url.
         """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
@@ -92,13 +89,24 @@ def _delete_url(resp_code):
     def _delete(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
         return {'api': api, 'data': data, 'code': resp_code, 'method': 'DELETE'}
     return _delete
+
+
+def parse_params(url):
+    """ take a url and return the get params as a dict.
+    """
+    p = urllib.parse.urlparse(url)
+    ret = dict()
+    params = p.query.split('&')
+    params = map(lambda x: x.split('='), params)
+    for k, v in params:
+        ret[k] = v
+    return ret
 
 
 @pytest.fixture(scope='session')

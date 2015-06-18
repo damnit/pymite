@@ -6,7 +6,7 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url
+from pymite.test.conftest import mock_urlopen, _get_url, parse_params
 from pymite.api.adapters import Customers
 
 
@@ -74,7 +74,8 @@ def test_customers_all_paginated_limited(monkeypatch, libfactory):
 
     monkeypatch.setattr(Customers, '_get', _get_url('customer'))
     url = customers.all(limit=4, page=5)['api']
-    assert url == 'https://foo.mite.yo.lk/customers.json?limit=4&page=5'
+    assert ('https://foo.mite.yo.lk/customers.json?' in url)
+    assert {'limit': '4', 'page': '5'} == parse_params(url)
 
 
 def test_customers_by_id(monkeypatch, libfactory):

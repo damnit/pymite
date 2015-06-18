@@ -9,7 +9,6 @@ __docformat__ = 'plaintext'
 import json
 import urllib.parse
 import urllib.request as request
-from collections import OrderedDict
 from pymite.api.utils import declassify, clean_dict
 
 
@@ -59,9 +58,7 @@ class MiteAPI(object):
     def _get(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = kwargs.items()
-        # clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs)
         if len(data) > 0:
@@ -99,8 +96,7 @@ class MiteAPI(object):
     def _put(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)
@@ -117,8 +113,7 @@ class MiteAPI(object):
     def _delete(self, path, **kwargs):
         """ return a dict. """
         # clean kwargs (filter None and empty string)
-        clean_kwargs = filter(lambda x: 1 if x[1] else 0, kwargs.items())
-        clean_kwargs = OrderedDict(sorted(list(clean_kwargs)))
+        clean_kwargs = clean_dict(kwargs)
 
         data = urllib.parse.urlencode(clean_kwargs).encode('utf-8')
         api = self._api('%s.json' % path)

@@ -3,7 +3,9 @@
 """ time entries adapter test module. """
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url, _post_url, _delete_url
+import json
+from pymite.test.conftest import (
+        mock_urlopen, _get_url, _post_url, _delete_url, parse_params)
 from pymite.api.adapters import TimeEntries
 
 
@@ -97,20 +99,16 @@ def test_time_entries_from_to_url(monkeypatch, libfactory):
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
     kws = {'from': '2015-02-02', 'to': '2015-02-14'}
     url = te.query(**kws)['api']
-    base_url = 'https://foo.mite.yo.lk/time_entries.json'
-    get_data = '?from=2015-02-02&to=2015-02-14'
-    assert url == '%s%s' % (base_url, get_data)
 
 
 def test_time_entries_from_to_paginated_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_get', _get_url('time_entry'))
-    kws = {'from': '2015-02-02', 'to': '2015-02-14', 'page': 4}
+    kws = {'from': '2015-02-02', 'to': '2015-02-14', 'page': '4'}
     url = te.query(**kws)['api']
-    base_url = 'https://foo.mite.yo.lk/time_entries.json'
-    get_data = '?from=2015-02-02&page=4&to=2015-02-14'
-    assert url == '%s%s' % (base_url, get_data)
+    assert ('https://foo.mite.yo.lk/time_entries.json?' in url)
+    assert kws == parse_params(url)
 
 
 def test_time_entries_delete(monkeypatch, libfactory):
@@ -147,11 +145,12 @@ def test_time_entries_create_url(monkeypatch, libfactory):
     te = libfactory.time_entries_adapter
 
     monkeypatch.setattr(TimeEntries, '_post', _post_url(201))
-    data = te.create(minutes=42, user_id=123, note='bam')
+    post_data = {'time_entry': {'minutes': 42, 'user_id': 123, 'note': 'bam'}}
+    data = te.create(**post_data['time_entry'])
     base_url = 'https://foo.mite.yo.lk/time_entries.json'
     assert data['api'] == base_url
     assert data['code'] == 201
     assert data['method'] == 'POST'
-    assert data['data'] == b'{"time_entry": {"minutes": 42, "note": "bam", "user_id": 123}}'
+    assert json.loads(data['data'].decode()) == post_data
 
 # vim: set ft=python ts=4 sw=4 expandtab :
