@@ -1,23 +1,18 @@
 # pymite
-Python Wrapper for the Mite API. PyMite also offers a self-explanatory command-line interface called pymite.
+Python wrapper for the [Mite](https://mite.yo.lk) API. It works with Python 3.3
+and 3.4.
 
-## Install
+## installation
 
-    pip install -r requirements.txt
+    python setup.py install
 
-## Command Line Tool
+## roadmap
+- release
+- publish on pypi
 
-Pymite uses bash completion to faciliate the usage,therefore a `pymite-complete.sh` was created.
+## tests ##
 
-Please extend your .bashrc by adding this line:
-	. /path/to/pymite-complete.sh
-
-## pytest ##
-pytest for whatever's sake does not work by just typing
-
-    py.test -vs
-
-you first have to cd into the test directory.
+    python setup.py test
 
 ## backporting ##
 Due to bug [1673007](https://bugs.python.org/issue1673007) in python < 3.3 we do
