@@ -1,4 +1,5 @@
-# pymite
+![pymite logo](https://raw.githubusercontent.com/damnit/pymite/master/docs/pymite-logo.png)
+
 Python wrapper for the [Mite](https://mite.yo.lk) API. It works with Python 3.3
 and 3.4.
 
