@@ -1,4 +1,5 @@
 ![pymite logo](https://raw.githubusercontent.com/damnit/pymite/master/docs/pymite-logo.png)
+
 Python wrapper for the [Mite](https://mite.yo.lk) API.
 
 ## Install
