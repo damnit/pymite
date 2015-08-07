@@ -4,7 +4,7 @@
 
 import urllib.request
 from pymite.test.conftest import mock_urlopen, _get_url
-from pymite.api.adapters import Users
+from pymite.adapters import Users
 
 
 def test_users_setup(libfactory):

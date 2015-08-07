@@ -7,7 +7,7 @@
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
-from pymite.api.utils import declassify
+from pymite.utils import declassify
 
 
 def test_declassify_single():

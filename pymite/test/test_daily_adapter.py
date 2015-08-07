@@ -4,7 +4,7 @@
 
 import urllib.request
 from pymite.test.conftest import mock_urlopen, _get_url
-from pymite.api.adapters import Daily
+from pymite.adapters import Daily
 
 
 def test_daily_setup(libfactory):

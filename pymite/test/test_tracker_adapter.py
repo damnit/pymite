@@ -8,7 +8,7 @@ __docformat__ = 'plaintext'
 import pytest
 import urllib.request
 from pymite.test.conftest import mock_urlopen, _get_url, _put_url, _delete_url
-from pymite.api.adapters import Tracker
+from pymite.adapters import Tracker
 
 
 def test_tracker_setup(libfactory):

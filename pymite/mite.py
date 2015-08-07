@@ -9,7 +9,7 @@ __docformat__ = 'plaintext'
 import json
 import urllib.parse
 import urllib.request as request
-from pymite.api.utils import declassify, clean_dict
+from pymite.utils import declassify, clean_dict
 
 
 class MiteAPI(object):

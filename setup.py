@@ -35,9 +35,7 @@ class PyTest(TestCommand):
 setup(
     name="pymite",
     version='0.1.0dev',
-    packages=['pymite.api',
-              'pymite.test',
-              ],
+    packages=['pymite'],
     author='Otto Hockel',
     author_email='hockel.otto@gmail.com',
     url='https://github.com/damnit/pymite',

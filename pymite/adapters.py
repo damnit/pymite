@@ -3,8 +3,8 @@
 """ api adapters module. """
 
 from functools import partial
-from pymite.api.mite import MiteAPI
-from pymite.api.utils import declassify
+from pymite.mite import MiteAPI
+from pymite.utils import declassify
 
 
 def _path(*args):

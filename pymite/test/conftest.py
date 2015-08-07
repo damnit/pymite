@@ -9,9 +9,9 @@ import json
 import pytest
 import urllib
 from io import BytesIO
-from pymite.api import Mite
-from pymite.api.mite import MiteAPI
-from pymite.api.utils import clean_dict
+from pymite import Mite
+from pymite.mite import MiteAPI
+from pymite.utils import clean_dict
 
 
 def mock_urlopen(data, resp_code=200):

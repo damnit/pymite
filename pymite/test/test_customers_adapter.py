@@ -7,7 +7,7 @@ __docformat__ = 'plaintext'
 
 import urllib.request
 from pymite.test.conftest import mock_urlopen, _get_url, parse_params
-from pymite.api.adapters import Customers
+from pymite.adapters import Customers
 
 
 def test_customers_setup(libfactory):

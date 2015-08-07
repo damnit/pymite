@@ -6,7 +6,7 @@ import urllib.request
 import json
 from pymite.test.conftest import (
         mock_urlopen, _get_url, _post_url, _delete_url, parse_params)
-from pymite.api.adapters import TimeEntries
+from pymite.adapters import TimeEntries
 
 
 def test_time_entries_setup(libfactory):
