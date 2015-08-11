@@ -1,13 +1,14 @@
 #  -*- coding: utf-8 -*-
 #  File: __init__.py
-""" Mite API factory"""
+""" adapter factory"""
 
 __author__ = 'Otto Hockel'
 __docformat__ = 'plaintext'
 
 
-from pymite.adapters import (Tracker, Daily, Users, Projects, Customers,
-                                 TimeEntries, Services)
+from pymite.adapters import (
+    Tracker, Daily, Users, Projects, Customers, TimeEntries, Services
+)
 
 
 class Mite(object):
@@ -15,6 +16,7 @@ class Mite(object):
     """
 
     def __init__(self, realm, apikey):
+        """ takes a valid realm and apikey. """
         self._apikey = apikey
         self._realm = realm
 

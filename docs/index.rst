@@ -17,9 +17,10 @@ Contents:
    :maxdepth: 2
 
    installation.rst
-   pymite.api.mite.rst
-   pymite.api.adapters.rst
-   pymite.api.utils.rst
+   pymite.rst
+   mite.rst
+   adapters.rst
+   utils.rst
 
 Indices and tables
 ==================

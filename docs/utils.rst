@@ -1,7 +1,7 @@
-pymite.api.utils module
+utils module
 =======================
 
-.. automodule:: pymite.api.utils
+.. automodule:: pymite.utils
     :members:
     :undoc-members:
     :show-inheritance:

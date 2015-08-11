@@ -1,7 +1,7 @@
-pymite.api.adapters module
+adapters module
 ==========================
 
-.. automodule:: pymite.api.adapters
+.. automodule:: pymite.adapters
     :members:
     :undoc-members:
     :show-inheritance:
