@@ -6,7 +6,7 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url, parse_params
+from .conftest import mock_urlopen, _get_url, parse_params
 from pymite.adapters import Customers
 
 

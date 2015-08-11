@@ -3,7 +3,7 @@
 """ users adapter test module. """
 
 import urllib.request
-from pymite.test.conftest import mock_urlopen, _get_url
+from .conftest import mock_urlopen, _get_url
 from pymite.adapters import Users
 
 
