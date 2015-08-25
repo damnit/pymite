@@ -5,8 +5,10 @@
 __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
+import pytest
 import urllib.request
 from .conftest import mock_urlopen
+from pymite.adapters import DefaultReadAdapter
 
 
 def test_setup(libfactory):
@@ -63,5 +65,11 @@ def test_base_api_account(monkeypatch, base_api):
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_account)
 
     assert base_api.account == account['account']
+
+
+def test_default_adapter_constructor(monkeypatch, base_api):
+    """ the setup of the rather virtual default read adapter. """
+    with pytest.raises(Exception):
+        DefaultReadAdapter(base_api.realm, base_api.apikey)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

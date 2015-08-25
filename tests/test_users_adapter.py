@@ -56,4 +56,37 @@ def test_users_by_id_url(monkeypatch, libfactory):
     url = us.by_id(1)['api']
     assert url == 'https://foo.mite.yo.lk/users/1.json'
 
+def test_users_by_mail(monkeypatch, libfactory):
+    us = libfactory.users_adapter
+    user_data = {'user': {
+        'name': 'John Cleese', 'email': 'jc42@flying.circus'}
+    }
+    urlopen_us = mock_urlopen(user_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_us)
+
+    user = us.by_mail('jc42@flying.circus')
+    assert user == user_data['user']
+
+    user_data = [
+        {'user': {'name': 'John Cleese', 'email': 'jc42@flying.circus'}},
+        {'user': {'name': 'Eric Idle', 'email': 'ei@flying.circus'}},
+    ]
+    urlopen_us = mock_urlopen(user_data)
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_us)
+
+    users = us.by_mail('@flying.circus')
+    assert users == [user_data[0]['user'], user_data[1]['user']]
+
+
+def test_users_by_mail_url(monkeypatch, libfactory):
+    us = libfactory.users_adapter
+
+    monkeypatch.setattr(Users, '_get', _get_url('user'))
+    url = us.by_mail('jc42@flying.circus')['api']
+    assert url == 'https://foo.mite.yo.lk/users.json?email=jc42%40flying.circus'
+
+    monkeypatch.setattr(Users, '_get', _get_url('user'))
+    url = us.by_mail('jc42@flying.circus', archived=True)['api']
+    assert url == 'https://foo.mite.yo.lk/users/archived.json?email=jc42%40flying.circus'
+
 # vim: set ft=python ts=4 sw=4 expandtab :
