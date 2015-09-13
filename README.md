@@ -13,5 +13,5 @@ Python wrapper for the [Mite](https://mite.yo.lk) API.
     m.tracker_adapter.show()
 
 ## backporting ##
-Due to bug [1673007](https://bugs.python.org/issue1673007) in python < 3.3 we do
-not plan to do a backport of pymite
+Due to bug [1673007](https://bugs.python.org/issue1673007) in python < 3.3 we
+did not plan to do a backport of pymite.
