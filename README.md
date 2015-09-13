@@ -8,7 +8,7 @@ Python wrapper for the [Mite](https://mite.yo.lk) API.
 
 ## Usage
 
-    from pymite.api import Mite
+    from pymite import Mite
     m = Mite("foo", "fooapikey123")
     m.tracker_adapter.show()
 
