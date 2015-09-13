@@ -2,6 +2,8 @@
 
 Python wrapper for the [Mite](https://mite.yo.lk) API.
 
+![travis](https://travis-ci.org/damnit/pymite.svg)
+
 ## Install
 
     pip install pymite
