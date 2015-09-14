@@ -2,7 +2,7 @@
 
 Python wrapper for the [Mite](https://mite.yo.lk) API.
 
-![travis](https://travis-ci.org/damnit/pymite.svg) [![Coverage Status](https://coveralls.io/repos/damnit/pymite/badge.svg?branch=master&service=github)](https://coveralls.io/github/damnit/pymite?branch=master)
+[![travis](https://travis-ci.org/damnit/pymite.svg)](https://travis-ci.org/damnit/pymite) [![Coverage Status](https://coveralls.io/repos/damnit/pymite/badge.svg?branch=master&service=github)](https://coveralls.io/github/damnit/pymite?branch=master)
 
 ## Install
 
