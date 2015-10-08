@@ -8,6 +8,7 @@ __docformat__ = 'plaintext'
 import json
 import pytest
 import urllib
+import tempfile
 from io import BytesIO
 from pymite import Mite
 from pymite.mite import MiteAPI
@@ -29,11 +30,20 @@ def mock_urlopen(data, resp_code=200):
     return mockreturn
 
 
-def mock_http_error():
+def mock_http_error(code=404, message='', **kwargs):
     """ closure to parametrize the urlopen mockage. """
-    def mockreturn(*args, **kwargs):
-        return {'error': 'You do not have the permission to do that.'}
-    return mockreturn
+    url = kwargs.get('url', 'foo.com')
+    hdrs = kwargs.get('hdrs', None)
+    fp = kwargs.get('fp', None)
+    if not fp:
+        fp = tempfile.TemporaryFile()
+        fp.write(bytes(message, encoding='UTF-8'))
+        fp.seek(0)
+
+    def http_error(*args, **kwargs):
+        exc = urllib.error.HTTPError(url, code, message, hdrs, fp)
+        raise exc
+    return http_error
 
 
 def _get_url(adapter_class):

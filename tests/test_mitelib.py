@@ -6,8 +6,9 @@ __author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import pytest
+import json
 import urllib.request
-from .conftest import mock_urlopen
+from .conftest import mock_urlopen, mock_http_error
 from pymite.adapters import DefaultReadAdapter
 
 
@@ -55,6 +56,14 @@ def test_base_api_myself(monkeypatch, base_api):
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_myself)
 
     assert base_api.myself == myself['user']
+
+
+def test_http_error(monkeypatch, base_api):
+    """ Test myself adapter property. """
+    error = {'error': "Whoops! We couldn't find your account 'foo'."}
+    urlopen_error = mock_http_error(code=404, message=json.dumps(error))
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_error)
+    assert error == base_api.myself
 
 
 def test_base_api_account(monkeypatch, base_api):
