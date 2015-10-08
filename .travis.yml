@@ -5,7 +5,7 @@ env:
   - TOX_ENV=py34
 install:
   - sudo apt-get update -qq
-  - pip install --upgrade pip setuptools tox virtualenv coveralls
+  - pip install --upgrade pip setuptools tox pytest virtualenv coveralls
 script:
   - tox -v -v -e $TOX_ENV
 after_success:
