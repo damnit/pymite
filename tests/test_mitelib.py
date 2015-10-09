@@ -58,12 +58,37 @@ def test_base_api_myself(monkeypatch, base_api):
     assert base_api.myself == myself['user']
 
 
-def test_http_error(monkeypatch, base_api):
+def test_http_get_error(monkeypatch, base_api):
     """ Test myself adapter property. """
     error = {'error': "Whoops! We couldn't find your account 'foo'."}
     urlopen_error = mock_http_error(code=404, message=json.dumps(error))
     monkeypatch.setattr(urllib.request, 'urlopen', urlopen_error)
     assert error == base_api.myself
+
+
+def test_http_post_error(monkeypatch, libfactory):
+    """ Test myself adapter property. """
+    te = libfactory.time_entries_adapter
+    error = {'error': "Whoops! You are not allowed to create an entry."}
+    urlopen_error = mock_http_error(code=404, message=json.dumps(error))
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_error)
+    assert error == te.create(minutes=42, note='foo', user_id=666)
+
+
+def test_http_put_error(monkeypatch, libfactory):
+    """ Test myself adapter property. """
+    error = {'error': "Whoops! We couldn't find the given entry."}
+    urlopen_error = mock_http_error(code=404, message=json.dumps(error))
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_error)
+    assert error == libfactory.tracker_adapter.start(1)
+
+
+def test_http_delete_error(monkeypatch, libfactory):
+    """ Test myself adapter property. """
+    error = {'error': "Whoops! We couldn't find the given entry."}
+    urlopen_error = mock_http_error(code=404, message=json.dumps(error))
+    monkeypatch.setattr(urllib.request, 'urlopen', urlopen_error)
+    assert error == libfactory.tracker_adapter.stop(1)
 
 
 def test_base_api_account(monkeypatch, base_api):
