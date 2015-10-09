@@ -4,5 +4,4 @@ source = pymite
 cover_pylib = False
 
 [report]
-ignore-errors = True
 omit = tests/*,setup.py
