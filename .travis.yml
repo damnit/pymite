@@ -1,10 +1,10 @@
 language: python
 python: 3.4
+sudo: false
 env:
   - TOX_ENV=py33
   - TOX_ENV=py34
 install:
-  - sudo apt-get update -qq
   - pip install --upgrade pip setuptools tox pytest virtualenv coveralls
 script:
   - tox -v -v -e $TOX_ENV
