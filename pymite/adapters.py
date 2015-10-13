@@ -14,8 +14,7 @@ def _path(*args):
 class DefaultReadAdapter(MiteAPI):
 
     def __init__(self, realm, apikey):
-        if self.__class__ == DefaultReadAdapter:
-            raise Exception('do not use the default adapter')
+        super(MiteAPI, self).__init__(realm, apikey)
 
     def by_id(self, id):
         """get adapter data by its id."""

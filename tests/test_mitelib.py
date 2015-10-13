@@ -103,7 +103,7 @@ def test_base_api_account(monkeypatch, base_api):
 
 def test_default_adapter_constructor(monkeypatch, base_api):
     """ the setup of the rather virtual default read adapter. """
-    with pytest.raises(Exception):
+    with pytest.raises(TypeError):
         DefaultReadAdapter(base_api.realm, base_api.apikey)
 
 # vim: set ft=python ts=4 sw=4 expandtab :
