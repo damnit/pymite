@@ -17,5 +17,4 @@ The development version can be downloaded from `its page at GitHub
 
 
 pymite has no dependencies apart of the stdlib.
-
-pymite requires Python version 3.3, or 3.4.
+Compatible Python versions: 3.3, 3.4 or 3.5.

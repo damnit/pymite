@@ -3,9 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-pymite
-======
-
 .. module:: pymite
 
 **pymite** is a python library module that wraps the rest calls to the time
