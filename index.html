@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymite 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="None" href="index.html#document-index" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-pymite"></span><p><strong>pymite</strong> is a python library module that wraps the rest calls to the time
+tracking service <a class="reference external" href="http://mite.yo.lk">mite</a>.</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<span id="document-installation"></span><div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Install pymite with <code class="docutils literal"><span class="pre">pip</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre>pip install pymite
+</pre></div>
+</div>
+<p>The development version can be downloaded from <a class="reference external" href="https://github.com/damnit/pymite">its page at GitHub</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/damnit/pymite.git
+cd pymite
+python setup.py develop
+</pre></div>
+</div>
+<p>pymite has no dependencies apart of the stdlib.
+Compatible Python versions: 3.3, 3.4 or 3.5.</p>
+</div>
+<span id="document-mite"></span><div class="section" id="pymite-adapter-factory">
+<h1>pymite adapter factory<a class="headerlink" href="#pymite-adapter-factory" title="Permalink to this headline">¶</a></h1>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">Mite</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;barapikey&quot;</span><span class="p">)</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">tracker_adapter</span>
+</pre></div>
+</div>
+<span class="target" id="module-pymite"></span><p>adapter factory</p>
+<dl class="class">
+<dt id="pymite.Mite">
+<em class="property">class </em><code class="descclassname">pymite.</code><code class="descname">Mite</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.Mite" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Factory that setups and returns the adapters</p>
+<dl class="attribute">
+<dt id="pymite.Mite.customers_adapter">
+<code class="descname">customers_adapter</code><a class="headerlink" href="#pymite.Mite.customers_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.daily_adapter">
+<code class="descname">daily_adapter</code><a class="headerlink" href="#pymite.Mite.daily_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.projects_adapter">
+<code class="descname">projects_adapter</code><a class="headerlink" href="#pymite.Mite.projects_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.services_adapter">
+<code class="descname">services_adapter</code><a class="headerlink" href="#pymite.Mite.services_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.time_entries_adapter">
+<code class="descname">time_entries_adapter</code><a class="headerlink" href="#pymite.Mite.time_entries_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.tracker_adapter">
+<code class="descname">tracker_adapter</code><a class="headerlink" href="#pymite.Mite.tracker_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymite.Mite.users_adapter">
+<code class="descname">users_adapter</code><a class="headerlink" href="#pymite.Mite.users_adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<span id="document-adapters"></span><div class="section" id="module-pymite.adapters">
+<span id="adapters-module"></span><h1>adapters module<a class="headerlink" href="#module-pymite.adapters" title="Permalink to this headline">¶</a></h1>
+<p>api adapters module.</p>
+<dl class="class">
+<dt id="pymite.adapters.Customers">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Customers</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Customers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymite.adapters.DefaultReadAdapter" title="pymite.adapters.DefaultReadAdapter"><code class="xref py py-class docutils literal"><span class="pre">pymite.adapters.DefaultReadAdapter</span></code></a></p>
+<p>the customers class.</p>
+<dl class="method">
+<dt id="pymite.adapters.Customers.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Customers.all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Customers.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Customers.by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Customers.by_name">
+<code class="descname">by_name</code><span class="sig-paren">(</span><em>name</em>, <em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Customers.by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.Daily">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Daily</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Daily" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymite.mite.MiteAPI</span></code></p>
+<p>show daily time entries.</p>
+<dl class="method">
+<dt id="pymite.adapters.Daily.at">
+<code class="descname">at</code><span class="sig-paren">(</span><em>year</em>, <em>month</em>, <em>day</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Daily.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>time entries by year, month and day.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Daily.today">
+<code class="descname">today</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Daily.today" title="Permalink to this definition">¶</a></dt>
+<dd><p>get today&#8217;s entries.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.DefaultReadAdapter">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">DefaultReadAdapter</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.DefaultReadAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymite.mite.MiteAPI</span></code></p>
+<dl class="method">
+<dt id="pymite.adapters.DefaultReadAdapter.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.DefaultReadAdapter.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>get all adapter data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.DefaultReadAdapter.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.DefaultReadAdapter.by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>get adapter data by its id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.DefaultReadAdapter.by_name">
+<code class="descname">by_name</code><span class="sig-paren">(</span><em>name</em>, <em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.DefaultReadAdapter.by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>get adapter data by name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.Projects">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Projects</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Projects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymite.adapters.DefaultReadAdapter" title="pymite.adapters.DefaultReadAdapter"><code class="xref py py-class docutils literal"><span class="pre">pymite.adapters.DefaultReadAdapter</span></code></a></p>
+<p>the projects class.</p>
+<dl class="method">
+<dt id="pymite.adapters.Projects.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Projects.all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Projects.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Projects.by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a project by it&#8217;s id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Projects.by_name">
+<code class="descname">by_name</code><span class="sig-paren">(</span><em>name</em>, <em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Projects.by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a project by it&#8217;s name.
+this only works with the exact name of the project.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.Services">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Services</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymite.adapters.DefaultReadAdapter" title="pymite.adapters.DefaultReadAdapter"><code class="xref py py-class docutils literal"><span class="pre">pymite.adapters.DefaultReadAdapter</span></code></a></p>
+<p>the services class.</p>
+<dl class="method">
+<dt id="pymite.adapters.Services.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Services.all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Services.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Services.by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Services.by_name">
+<code class="descname">by_name</code><span class="sig-paren">(</span><em>name</em>, <em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Services.by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.TimeEntries">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">TimeEntries</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.TimeEntries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymite.mite.MiteAPI</span></code></p>
+<p>time entries can be filtered by a lot of params:
+ids     : customer_id, project_id, service_id, user_id
+billable: true or false
+note    : note of the time entry
+locked  : true or false</p>
+<dl class="method">
+<dt id="pymite.adapters.TimeEntries.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.TimeEntries.by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup time entries by ID. returns an entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.TimeEntries.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>date_at=None</em>, <em>minutes=0</em>, <em>note=''</em>, <em>user_id=None</em>, <em>project_id=None</em>, <em>service_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.TimeEntries.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>date_at - date of time entry. Format YYYY-MM-DD. default: today
+minutes - default: 0
+note - default: &#8216;&#8217; (empty string)
+user_id - default: actual user id (only admin users can edit this)
+project_id - default: None
+service_id - default: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.TimeEntries.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.TimeEntries.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>delete a time entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.TimeEntries.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.TimeEntries.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>a free query - you are responsible for the kwargs.
+Object categories &#8216;time_entry&#8217; and &#8216;time_entry_group&#8217; are declassed.
+See <a class="reference external" href="http://mite.yo.lk/en/api/time-entries.html">http://mite.yo.lk/en/api/time-entries.html</a> for more information.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.Tracker">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Tracker</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Tracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymite.mite.MiteAPI</span></code></p>
+<p>show daily time entries.</p>
+<dl class="method">
+<dt id="pymite.adapters.Tracker.show">
+<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Tracker.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>show the state of the tracker.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Tracker.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Tracker.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>start a specific tracker.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Tracker.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Tracker.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>stop the tracker.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymite.adapters.Users">
+<em class="property">class </em><code class="descclassname">pymite.adapters.</code><code class="descname">Users</code><span class="sig-paren">(</span><em>realm</em>, <em>apikey</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymite.mite.MiteAPI</span></code></p>
+<p>the users class.</p>
+<dl class="method">
+<dt id="pymite.adapters.Users.all">
+<code class="descname">all</code><span class="sig-paren">(</span><em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Users.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>get all time entry data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Users.by_id">
+<code class="descname">by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Users.by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup users by ID. returns a user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymite.adapters.Users.by_mail">
+<code class="descname">by_mail</code><span class="sig-paren">(</span><em>mail</em>, <em>archived=False</em>, <em>limit=None</em>, <em>page=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.adapters.Users.by_mail" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup users by mail address.
+you may do in two ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li>specify one address: <a class="reference external" href="mailto:foo&#37;&#52;&#48;bar&#46;com">foo<span>&#64;</span>bar<span>&#46;</span>com</a></li>
+<li>specify a domain   : &#64;bar.com</li>
+</ul>
+</div></blockquote>
+<p>both will return a list.</p>
+<p>the role &#8216;Zeiterfasser&#8217; may not lookup users.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span id="document-utils"></span><div class="section" id="module-pymite.utils">
+<span id="utils-module"></span><h1>utils module<a class="headerlink" href="#module-pymite.utils" title="Permalink to this headline">¶</a></h1>
+<p>utils module.</p>
+<dl class="function">
+<dt id="pymite.utils.clean_dict">
+<code class="descclassname">pymite.utils.</code><code class="descname">clean_dict</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.utils.clean_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove the keys with None values.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymite.utils.declassify">
+<code class="descclassname">pymite.utils.</code><code class="descname">declassify</code><span class="sig-paren">(</span><em>to_remove</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymite.utils.declassify" title="Permalink to this definition">¶</a></dt>
+<dd><p>flatten the return values of the mite api.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html#document-index">
+              <img class="logo" src="_static/pymite-logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html#document-index">Table Of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-mite">pymite adapter factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-adapters">adapters module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-utils">utils module</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html#document-index">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Otto Hockel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
