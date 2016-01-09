@@ -31,8 +31,8 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-long_description = open(os.path.join(os.path.dirname(__file__), 'docs',
-                        'README.rst')).read()
+long_description = open(os.path.join(os.path.dirname(__file__),
+                        'README.txt')).read()
 
 setup(
     name='pymite',

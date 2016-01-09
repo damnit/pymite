@@ -9,3 +9,6 @@ develop:
 
 test:
 	@py.test -vvs
+
+release:
+	python setup.py sdist bdist_wheel upload
