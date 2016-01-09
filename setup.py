@@ -1,20 +1,19 @@
 #  -*- coding: utf-8 -*-
 #
 #  File Name: setup.py
-#  Last Modified: 2014 Dez 20
 
-
-__author__ = 'Daniel Altiparmak <daniel.altiparmak@inquant.de>'
-__docformat__ = 'plaintext'
-
-
+import os
 import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
 
+__author__ = 'Otto Hockel <hockel.otto@googlemail.com>'
+__docformat__ = 'plaintext'
+
+
 class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+    user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
 
     def initialize_options(self):
         TestCommand.initialize_options(self)
@@ -32,13 +31,32 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+long_description = open(os.path.join(os.path.dirname(__file__), 'docs',
+                        'README.rst')).read()
+
 setup(
-    name="pymite",
-    version='0.1.0',
+    name='pymite',
+    version='1.0.0',
+    description='Python client for Mite.yo.lk time tracking service',
+    long_description=long_description,
     packages=['pymite'],
+    keywords=['mite', 'pymite', 'time tracking', 'time', 'tracking',
+              'mite.yo.lk'],
     author='Otto Hockel',
     author_email='hockel.otto@gmail.com',
-    url='https://github.com/damnit/pymite',
+    url='https://damnit.github.io/pymite/',
+    license='MIT',
+    platforms='Posix; MacOS X; Windows',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Topic :: Internet',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+    ],
     install_requires=[],
     tests_require=['pytest'],
     cmdclass={'test': PyTest}
