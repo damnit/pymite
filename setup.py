@@ -36,7 +36,7 @@ long_description = open(os.path.join(os.path.dirname(__file__),
 
 setup(
     name='pymite',
-    version='1.0.0',
+    version='1.0.1',
     description='Python client for Mite.yo.lk time tracking service',
     long_description=long_description,
     packages=['pymite'],
