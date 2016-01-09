@@ -1,8 +1,6 @@
 .. figure:: https://raw.githubusercontent.com/damnit/pymite/master/docs/pymite-logo.png
    :alt: pymite logo
 
-   pymite logo
-
 Python wrapper for the `Mite`_ API.
 
 |travis| |Coverage Status|
